@@ -125,8 +125,8 @@ importers:
         specifier: ^2.0.0
         version: 2.1.1
       lunr:
-        specifier: file:../../../lunr.js
-        version: file:../lunr.js
+        specifier: github:mlengse/lunr.js
+        version: https://codeload.github.com/mlengse/lunr.js/tar.gz/8dd2d9e7dda851c7d4cb6ab1beb07153f7070494
       lunr-languages:
         specifier: ^1.4.0
         version: 1.10.0
@@ -4634,8 +4634,9 @@ packages:
   lunr-languages@1.10.0:
     resolution: {integrity: sha512-BBjKKcwrieJlzwwc9M5H/MRXGJ2qyOSDx/NXYiwkuKjiLOOoouh0WsDzeqcLoUWcX31y7i8sb8IgsZKObdUCkw==}
 
-  lunr@file:../lunr.js:
-    resolution: {directory: ../lunr.js, type: directory}
+  lunr@https://codeload.github.com/mlengse/lunr.js/tar.gz/8dd2d9e7dda851c7d4cb6ab1beb07153f7070494:
+    resolution: {tarball: https://codeload.github.com/mlengse/lunr.js/tar.gz/8dd2d9e7dda851c7d4cb6ab1beb07153f7070494}
+    version: 2.3.9
 
   make-dir@2.1.0:
     resolution: {integrity: sha512-LS9X+dc8KLxXCb8dni79fLIIUA5VyZoyjSMCwTluaXA0o27cCK0bhXkpgw+sTXVpPy/lSO57ilRixqk0vDmtRA==}
@@ -13008,7 +13009,7 @@ snapshots:
 
   lunr-languages@1.10.0: {}
 
-  lunr@file:../lunr.js: {}
+  lunr@https://codeload.github.com/mlengse/lunr.js/tar.gz/8dd2d9e7dda851c7d4cb6ab1beb07153f7070494: {}
 
   make-dir@2.1.0:
     dependencies:
