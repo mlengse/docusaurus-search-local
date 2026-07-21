@@ -124,6 +124,9 @@ importers:
       clsx:
         specifier: ^2.0.0
         version: 2.1.1
+      lunr:
+        specifier: file:../../../lunr.js
+        version: file:../lunr.js
       lunr-languages:
         specifier: ^1.4.0
         version: 1.10.0
@@ -4630,6 +4633,9 @@ packages:
 
   lunr-languages@1.10.0:
     resolution: {integrity: sha512-BBjKKcwrieJlzwwc9M5H/MRXGJ2qyOSDx/NXYiwkuKjiLOOoouh0WsDzeqcLoUWcX31y7i8sb8IgsZKObdUCkw==}
+
+  lunr@file:../lunr.js:
+    resolution: {directory: ../lunr.js, type: directory}
 
   make-dir@2.1.0:
     resolution: {integrity: sha512-LS9X+dc8KLxXCb8dni79fLIIUA5VyZoyjSMCwTluaXA0o27cCK0bhXkpgw+sTXVpPy/lSO57ilRixqk0vDmtRA==}
@@ -13001,6 +13007,8 @@ snapshots:
       yallist: 4.0.0
 
   lunr-languages@1.10.0: {}
+
+  lunr@file:../lunr.js: {}
 
   make-dir@2.1.0:
     dependencies:
