@@ -23,7 +23,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "author": "Christian Flach",
+  "author": "mLengse (medotsys@gmail.com)",
   "dependencies": {
     "@algolia/autocomplete-js": "^1.8.2",
     "@algolia/autocomplete-theme-classic": "^1.8.2",

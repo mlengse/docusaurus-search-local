@@ -52,7 +52,7 @@ async function fetchIndex(
       json = await response.json();
     } catch (err) {
       // An index might not actually exist if no pages for it have been indexed.
-      // https://github.com/cmfcmf/docusaurus-search-local/issues/85
+      // https://github.com/mlengse/docusaurus-search-local/issues/85
       // TODO: we should somehow pass the names of indexes that exist to the
       // client at build time instead of catching the error here.
       return EMPTY_INDEX;

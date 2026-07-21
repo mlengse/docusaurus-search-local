@@ -5,13 +5,13 @@ This change log is automatically generated based on commit messags. See
 [Commit Message Guidelines](CONTRIBUTING.md#commit-message-guidelines)
 for more information.
 
-## [2.0.1](https://github.com/cmfcmf/docusaurus-search-local/compare/v2.0.0...v2.0.1) (2025-10-25)
+## [2.0.1](https://github.com/mlengse/docusaurus-search-local/compare/v2.0.0...v2.0.1) (2025-10-25)
 
 ### Bug Fixes
 
-- Do not flicker Docusaurus logo on load ([9ebd7fa](https://github.com/cmfcmf/docusaurus-search-local/commit/9ebd7fa1a7cab484b1c5011ac51b8b1d7d292b0b))
+- Do not flicker Docusaurus logo on load ([9ebd7fa](https://github.com/mlengse/docusaurus-search-local/commit/9ebd7fa1a7cab484b1c5011ac51b8b1d7d292b0b))
 
-## [2.0.0](https://github.com/cmfcmf/docusaurus-search-local/compare/v1.2.0...v2.0.0) (2025-10-18)
+## [2.0.0](https://github.com/mlengse/docusaurus-search-local/compare/v1.2.0...v2.0.0) (2025-10-18)
 
 ### ⚠ BREAKING CHANGES
 
@@ -21,42 +21,42 @@ for more information.
 
 ### Features
 
-- Add many more (AI-generated) translations ([621f02c](https://github.com/cmfcmf/docusaurus-search-local/commit/621f02c815583ec4ccf7cbbddae1a36d5c932847))
-- Update to Docusaurus v3 and support React v19 ([b8d4351](https://github.com/cmfcmf/docusaurus-search-local/commit/b8d43517af76137df6251abdeac3d77df1027519))
+- Add many more (AI-generated) translations ([621f02c](https://github.com/mlengse/docusaurus-search-local/commit/621f02c815583ec4ccf7cbbddae1a36d5c932847))
+- Update to Docusaurus v3 and support React v19 ([b8d4351](https://github.com/mlengse/docusaurus-search-local/commit/b8d43517af76137df6251abdeac3d77df1027519))
 
 ### Bug Fixes
 
-- Minor updates to existing translations for CS, ES, IT, JA, SK ([6bba3e7](https://github.com/cmfcmf/docusaurus-search-local/commit/6bba3e79b828f1f596627d04067d837b1f18c9fa))
-- Support hash parsing of URLs (fixes Docusaurus 3 compat) ([#216](https://github.com/cmfcmf/docusaurus-search-local/issues/216)) ([96c7803](https://github.com/cmfcmf/docusaurus-search-local/commit/96c7803e63fbfdb5c5dd2b2285928fffdaeed577))
+- Minor updates to existing translations for CS, ES, IT, JA, SK ([6bba3e7](https://github.com/mlengse/docusaurus-search-local/commit/6bba3e79b828f1f596627d04067d837b1f18c9fa))
+- Support hash parsing of URLs (fixes Docusaurus 3 compat) ([#216](https://github.com/mlengse/docusaurus-search-local/issues/216)) ([96c7803](https://github.com/mlengse/docusaurus-search-local/commit/96c7803e63fbfdb5c5dd2b2285928fffdaeed577))
 
 ### Other
 
-- Update dependencies ([a9188ca](https://github.com/cmfcmf/docusaurus-search-local/commit/a9188cadf8365c0f91c970ff361c07831b6ebf97))
-- Update minimum supported Node.js version to ^20 ([4e52d33](https://github.com/cmfcmf/docusaurus-search-local/commit/4e52d33bab46eafdd2f9010688182fc23814db71))
+- Update dependencies ([a9188ca](https://github.com/mlengse/docusaurus-search-local/commit/a9188cadf8365c0f91c970ff361c07831b6ebf97))
+- Update minimum supported Node.js version to ^20 ([4e52d33](https://github.com/mlengse/docusaurus-search-local/commit/4e52d33bab46eafdd2f9010688182fc23814db71))
 
-## [1.2.0](https://github.com/cmfcmf/docusaurus-search-local/compare/v1.1.0...v1.2.0) (2024-06-09)
-
-### Features
-
-- Add Basque translations ([74f139b](https://github.com/cmfcmf/docusaurus-search-local/commit/74f139b19ac8fa69d3a81368b5563b982a82c8af)), closes [#188](https://github.com/cmfcmf/docusaurus-search-local/issues/188)
-- Add Hungarian translation ([c9ba620](https://github.com/cmfcmf/docusaurus-search-local/commit/c9ba62063d7bae4b4507b5abe62c52abd7399595))
-- Add option to show parent categories path in search result ([#173](https://github.com/cmfcmf/docusaurus-search-local/issues/173)) ([8822f78](https://github.com/cmfcmf/docusaurus-search-local/commit/8822f78172d9124021e1e3d49deb3a8fb2a75da5))
-- Create Farsi translation ([#201](https://github.com/cmfcmf/docusaurus-search-local/issues/201)) ([c94de72](https://github.com/cmfcmf/docusaurus-search-local/commit/c94de727dd4edcf9aeb365e644b943f24028280f))
-- Create Turkish translation ([#202](https://github.com/cmfcmf/docusaurus-search-local/issues/202)) ([6e36782](https://github.com/cmfcmf/docusaurus-search-local/commit/6e36782663c29d4e6f7a7a94a888bf855ca572e7))
-- Estonian translation ([4597150](https://github.com/cmfcmf/docusaurus-search-local/commit/4597150d364d7899c67b10ce121fa87d90df4f24))
-- Ukrainian translation ([#186](https://github.com/cmfcmf/docusaurus-search-local/issues/186)) ([d6724e3](https://github.com/cmfcmf/docusaurus-search-local/commit/d6724e3509959b4e280431fa5b6076d308460611))
-
-## [1.1.0](https://github.com/cmfcmf/docusaurus-search-local/compare/v1.0.0...v1.1.0) (2023-04-10)
+## [1.2.0](https://github.com/mlengse/docusaurus-search-local/compare/v1.1.0...v1.2.0) (2024-06-09)
 
 ### Features
 
-- Add Dutch translations ([#178](https://github.com/cmfcmf/docusaurus-search-local/issues/178)) ([0c3b492](https://github.com/cmfcmf/docusaurus-search-local/commit/0c3b492ecaeb8969f69cd27de98576b5e20c26a8))
+- Add Basque translations ([74f139b](https://github.com/mlengse/docusaurus-search-local/commit/74f139b19ac8fa69d3a81368b5563b982a82c8af)), closes [#188](https://github.com/mlengse/docusaurus-search-local/issues/188)
+- Add Hungarian translation ([c9ba620](https://github.com/mlengse/docusaurus-search-local/commit/c9ba62063d7bae4b4507b5abe62c52abd7399595))
+- Add option to show parent categories path in search result ([#173](https://github.com/mlengse/docusaurus-search-local/issues/173)) ([8822f78](https://github.com/mlengse/docusaurus-search-local/commit/8822f78172d9124021e1e3d49deb3a8fb2a75da5))
+- Create Farsi translation ([#201](https://github.com/mlengse/docusaurus-search-local/issues/201)) ([c94de72](https://github.com/mlengse/docusaurus-search-local/commit/c94de727dd4edcf9aeb365e644b943f24028280f))
+- Create Turkish translation ([#202](https://github.com/mlengse/docusaurus-search-local/issues/202)) ([6e36782](https://github.com/mlengse/docusaurus-search-local/commit/6e36782663c29d4e6f7a7a94a888bf855ca572e7))
+- Estonian translation ([4597150](https://github.com/mlengse/docusaurus-search-local/commit/4597150d364d7899c67b10ce121fa87d90df4f24))
+- Ukrainian translation ([#186](https://github.com/mlengse/docusaurus-search-local/issues/186)) ([d6724e3](https://github.com/mlengse/docusaurus-search-local/commit/d6724e3509959b4e280431fa5b6076d308460611))
+
+## [1.1.0](https://github.com/mlengse/docusaurus-search-local/compare/v1.0.0...v1.1.0) (2023-04-10)
+
+### Features
+
+- Add Dutch translations ([#178](https://github.com/mlengse/docusaurus-search-local/issues/178)) ([0c3b492](https://github.com/mlengse/docusaurus-search-local/commit/0c3b492ecaeb8969f69cd27de98576b5e20c26a8))
 
 ### Bug Fixes
 
-- Re-add support for using this plugin on Windows ([0337ada](https://github.com/cmfcmf/docusaurus-search-local/commit/0337ada1ecf3e188eac636dfbc47a363a72008e6)), closes [#175](https://github.com/cmfcmf/docusaurus-search-local/issues/175) [#179](https://github.com/cmfcmf/docusaurus-search-local/issues/179)
+- Re-add support for using this plugin on Windows ([0337ada](https://github.com/mlengse/docusaurus-search-local/commit/0337ada1ecf3e188eac636dfbc47a363a72008e6)), closes [#175](https://github.com/mlengse/docusaurus-search-local/issues/175) [#179](https://github.com/mlengse/docusaurus-search-local/issues/179)
 
-## [1.0.0](https://github.com/cmfcmf/docusaurus-search-local/compare/v0.11.0...v1.0.0) (2023-02-26)
+## [1.0.0](https://github.com/mlengse/docusaurus-search-local/compare/v0.11.0...v1.0.0) (2023-02-26)
 
 ### ⚠ BREAKING CHANGES
 
@@ -64,42 +64,42 @@ for more information.
 
 ### Features
 
-- Add Danish translations ([deb44b7](https://github.com/cmfcmf/docusaurus-search-local/commit/deb44b7e20e08747b4e7a744e7d21a88e338903b))
-- Create Norwegian translation ([f1833f3](https://github.com/cmfcmf/docusaurus-search-local/commit/f1833f3da543b7f723e04bd0ff9f5d0fd511f686))
-- Create Russion translation, closes [#158](https://github.com/cmfcmf/docusaurus-search-local/issues/158) ([9917a13](https://github.com/cmfcmf/docusaurus-search-local/commit/9917a135651f1ab292a8f27e6e3b57af12d94265))
-- Create Taiwanese translation ([4437359](https://github.com/cmfcmf/docusaurus-search-local/commit/4437359eca9396603f574396bd6609587222ee25))
-- Create Thai translation ([#164](https://github.com/cmfcmf/docusaurus-search-local/issues/164)) ([ba2d41e](https://github.com/cmfcmf/docusaurus-search-local/commit/ba2d41ebf45f10e2810a44d6800daca18d03f17a))
+- Add Danish translations ([deb44b7](https://github.com/mlengse/docusaurus-search-local/commit/deb44b7e20e08747b4e7a744e7d21a88e338903b))
+- Create Norwegian translation ([f1833f3](https://github.com/mlengse/docusaurus-search-local/commit/f1833f3da543b7f723e04bd0ff9f5d0fd511f686))
+- Create Russion translation, closes [#158](https://github.com/mlengse/docusaurus-search-local/issues/158) ([9917a13](https://github.com/mlengse/docusaurus-search-local/commit/9917a135651f1ab292a8f27e6e3b57af12d94265))
+- Create Taiwanese translation ([4437359](https://github.com/mlengse/docusaurus-search-local/commit/4437359eca9396603f574396bd6609587222ee25))
+- Create Thai translation ([#164](https://github.com/mlengse/docusaurus-search-local/issues/164)) ([ba2d41e](https://github.com/mlengse/docusaurus-search-local/commit/ba2d41ebf45f10e2810a44d6800daca18d03f17a))
 
 ### Bug Fixes
 
-- Correctly extract page titles when not specified in frontmatter, closes [#146](https://github.com/cmfcmf/docusaurus-search-local/issues/146) ([1f33151](https://github.com/cmfcmf/docusaurus-search-local/commit/1f33151bbef355a82361734f434e65af624b5ac2))
-- Do not generate .d.ts files, which break `docusaurus write-translations`, closes [#145](https://github.com/cmfcmf/docusaurus-search-local/issues/145), [#129](https://github.com/cmfcmf/docusaurus-search-local/issues/129), [#163](https://github.com/cmfcmf/docusaurus-search-local/issues/163), [#167](https://github.com/cmfcmf/docusaurus-search-local/issues/167) ([c09cc94](https://github.com/cmfcmf/docusaurus-search-local/commit/c09cc942bd2e4078fcd517b965f63848079f5007))
-- Fix potential error when calculating paths, closes [#136](https://github.com/cmfcmf/docusaurus-search-local/issues/136) ([26f1b71](https://github.com/cmfcmf/docusaurus-search-local/commit/26f1b7132087211ef4211f60f55dbe3d9ab4b2fe))
-- Resolve warning regarding `render` parameter in autocomplete, closes [#148](https://github.com/cmfcmf/docusaurus-search-local/issues/148) ([66d41e4](https://github.com/cmfcmf/docusaurus-search-local/commit/66d41e479f8fab7be13047d1761b1e4f6be562c9))
-- Support Yarn pnp, closes [#139](https://github.com/cmfcmf/docusaurus-search-local/issues/139) ([045d534](https://github.com/cmfcmf/docusaurus-search-local/commit/045d5346470eea2a5a30dd944e138ef0c5400032))
+- Correctly extract page titles when not specified in frontmatter, closes [#146](https://github.com/mlengse/docusaurus-search-local/issues/146) ([1f33151](https://github.com/mlengse/docusaurus-search-local/commit/1f33151bbef355a82361734f434e65af624b5ac2))
+- Do not generate .d.ts files, which break `docusaurus write-translations`, closes [#145](https://github.com/mlengse/docusaurus-search-local/issues/145), [#129](https://github.com/mlengse/docusaurus-search-local/issues/129), [#163](https://github.com/mlengse/docusaurus-search-local/issues/163), [#167](https://github.com/mlengse/docusaurus-search-local/issues/167) ([c09cc94](https://github.com/mlengse/docusaurus-search-local/commit/c09cc942bd2e4078fcd517b965f63848079f5007))
+- Fix potential error when calculating paths, closes [#136](https://github.com/mlengse/docusaurus-search-local/issues/136) ([26f1b71](https://github.com/mlengse/docusaurus-search-local/commit/26f1b7132087211ef4211f60f55dbe3d9ab4b2fe))
+- Resolve warning regarding `render` parameter in autocomplete, closes [#148](https://github.com/mlengse/docusaurus-search-local/issues/148) ([66d41e4](https://github.com/mlengse/docusaurus-search-local/commit/66d41e479f8fab7be13047d1761b1e4f6be562c9))
+- Support Yarn pnp, closes [#139](https://github.com/mlengse/docusaurus-search-local/issues/139) ([045d534](https://github.com/mlengse/docusaurus-search-local/commit/045d5346470eea2a5a30dd944e138ef0c5400032))
 
 ### Other
 
-- Update to Docusaurus v2 ([f8619b7](https://github.com/cmfcmf/docusaurus-search-local/commit/f8619b72ec748ac084b53cf7c88157419a27863a))
+- Update to Docusaurus v2 ([f8619b7](https://github.com/mlengse/docusaurus-search-local/commit/f8619b72ec748ac084b53cf7c88157419a27863a))
 
-# [0.11.0](https://github.com/cmfcmf/docusaurus-search-local/compare/v0.10.0...v0.11.0) (2022-06-12)
+# [0.11.0](https://github.com/mlengse/docusaurus-search-local/compare/v0.10.0...v0.11.0) (2022-06-12)
 
 ### Bug Fixes
 
-- Correct alignment of search input, closes [#117](https://github.com/cmfcmf/docusaurus-search-local/issues/117) ([f29dc02](https://github.com/cmfcmf/docusaurus-search-local/commit/f29dc02c475980509599018bae3ff45beecad6f3))
+- Correct alignment of search input, closes [#117](https://github.com/mlengse/docusaurus-search-local/issues/117) ([f29dc02](https://github.com/mlengse/docusaurus-search-local/commit/f29dc02c475980509599018bae3ff45beecad6f3))
 
 ### chore
 
-- Update dependencies ([1fe21f7](https://github.com/cmfcmf/docusaurus-search-local/commit/1fe21f768b957140ad9fcbd1ac05cebfbee48b3a))
+- Update dependencies ([1fe21f7](https://github.com/mlengse/docusaurus-search-local/commit/1fe21f768b957140ad9fcbd1ac05cebfbee48b3a))
 
 ### Features
 
-- Add Czech translation ([#115](https://github.com/cmfcmf/docusaurus-search-local/issues/115)) ([cc7c724](https://github.com/cmfcmf/docusaurus-search-local/commit/cc7c7249b3e28cf5cb3c958932144618cd211ae6))
-- Add Slowak translation ([#116](https://github.com/cmfcmf/docusaurus-search-local/issues/116)) ([970ba86](https://github.com/cmfcmf/docusaurus-search-local/commit/970ba8656bd1380385e3bd7ea10009fa3c108d4f))
-- Add Swedish Translation ([#105](https://github.com/cmfcmf/docusaurus-search-local/issues/105)) ([72fdcd8](https://github.com/cmfcmf/docusaurus-search-local/commit/72fdcd80c555a70d4791a5930083fe93ed8c2e7d))
-- Make number of search results configurable, closes [#122](https://github.com/cmfcmf/docusaurus-search-local/issues/122) ([a9d2faa](https://github.com/cmfcmf/docusaurus-search-local/commit/a9d2faa3847f9762e8498c253b89f04bdaf7ab2a))
-- support Docusaurus v2.0.0-beta.17, update dependencies, closes [#102](https://github.com/cmfcmf/docusaurus-search-local/issues/102), closes [#99](https://github.com/cmfcmf/docusaurus-search-local/issues/99) ([84c72c3](https://github.com/cmfcmf/docusaurus-search-local/commit/84c72c3d98c6e0d578c7799274f4a33a896c1425))
-- Support indexing of docs and blog tags, closes [#121](https://github.com/cmfcmf/docusaurus-search-local/issues/121) ([df0a81e](https://github.com/cmfcmf/docusaurus-search-local/commit/df0a81ee07c84f15c8d0095e31aa827a45289c19))
+- Add Czech translation ([#115](https://github.com/mlengse/docusaurus-search-local/issues/115)) ([cc7c724](https://github.com/mlengse/docusaurus-search-local/commit/cc7c7249b3e28cf5cb3c958932144618cd211ae6))
+- Add Slowak translation ([#116](https://github.com/mlengse/docusaurus-search-local/issues/116)) ([970ba86](https://github.com/mlengse/docusaurus-search-local/commit/970ba8656bd1380385e3bd7ea10009fa3c108d4f))
+- Add Swedish Translation ([#105](https://github.com/mlengse/docusaurus-search-local/issues/105)) ([72fdcd8](https://github.com/mlengse/docusaurus-search-local/commit/72fdcd80c555a70d4791a5930083fe93ed8c2e7d))
+- Make number of search results configurable, closes [#122](https://github.com/mlengse/docusaurus-search-local/issues/122) ([a9d2faa](https://github.com/mlengse/docusaurus-search-local/commit/a9d2faa3847f9762e8498c253b89f04bdaf7ab2a))
+- support Docusaurus v2.0.0-beta.17, update dependencies, closes [#102](https://github.com/mlengse/docusaurus-search-local/issues/102), closes [#99](https://github.com/mlengse/docusaurus-search-local/issues/99) ([84c72c3](https://github.com/mlengse/docusaurus-search-local/commit/84c72c3d98c6e0d578c7799274f4a33a896c1425))
+- Support indexing of docs and blog tags, closes [#121](https://github.com/mlengse/docusaurus-search-local/issues/121) ([df0a81e](https://github.com/mlengse/docusaurus-search-local/commit/df0a81ee07c84f15c8d0095e31aa827a45289c19))
 
 ### BREAKING CHANGES
 
@@ -108,51 +108,51 @@ for more information.
 - The minimum supported Docusaurus version is now v2.0.0-beta21
 - the minimum supported Docusaurus version is now v2.0.0-beta17.
 
-# [0.10.0](https://github.com/cmfcmf/docusaurus-search-local/compare/v0.9.4...v0.10.0) (2022-01-28)
+# [0.10.0](https://github.com/mlengse/docusaurus-search-local/compare/v0.9.4...v0.10.0) (2022-01-28)
 
 ### Features
 
-- Add polish translations :poland: ([#95](https://github.com/cmfcmf/docusaurus-search-local/issues/95)) ([e947ad1](https://github.com/cmfcmf/docusaurus-search-local/commit/e947ad108738445b6cafe6537531e72418c9e411))
-- support Docusaurus v2.0.0-beta.15, fixes [#93](https://github.com/cmfcmf/docusaurus-search-local/issues/93) ([30a6c66](https://github.com/cmfcmf/docusaurus-search-local/commit/30a6c66e974df0536a51399bd18ba5458d1c62a8))
+- Add polish translations :poland: ([#95](https://github.com/mlengse/docusaurus-search-local/issues/95)) ([e947ad1](https://github.com/mlengse/docusaurus-search-local/commit/e947ad108738445b6cafe6537531e72418c9e411))
+- support Docusaurus v2.0.0-beta.15, fixes [#93](https://github.com/mlengse/docusaurus-search-local/issues/93) ([30a6c66](https://github.com/mlengse/docusaurus-search-local/commit/30a6c66e974df0536a51399bd18ba5458d1c62a8))
 
 ### BREAKING CHANGES
 
 - the minimum supported Docusaurus version is now v2.0.0-beta15.
 
-## [0.9.4](https://github.com/cmfcmf/docusaurus-search-local/compare/v0.9.3...v0.9.4) (2022-01-19)
+## [0.9.4](https://github.com/mlengse/docusaurus-search-local/compare/v0.9.3...v0.9.4) (2022-01-19)
 
 ### Bug Fixes
 
-- Return EMPTY_INDEX when server responds with error. ([#91](https://github.com/cmfcmf/docusaurus-search-local/issues/91)) ([1a4d89c](https://github.com/cmfcmf/docusaurus-search-local/commit/1a4d89c77ff7bb029386de50d2a1b1e5dc7e95b3))
+- Return EMPTY_INDEX when server responds with error. ([#91](https://github.com/mlengse/docusaurus-search-local/issues/91)) ([1a4d89c](https://github.com/mlengse/docusaurus-search-local/commit/1a4d89c77ff7bb029386de50d2a1b1e5dc7e95b3))
 
-## [0.9.3](https://github.com/cmfcmf/docusaurus-search-local/compare/v0.9.2...v0.9.3) (2022-01-13)
-
-### Bug Fixes
-
-- wrong variable when checking available documentation plugins ([8b04bbf](https://github.com/cmfcmf/docusaurus-search-local/commit/8b04bbfa277b1a7afd4aeecae48e52f68f4d4f77))
-
-## [0.9.2](https://github.com/cmfcmf/docusaurus-search-local/compare/v0.9.1...v0.9.2) (2021-12-14)
+## [0.9.3](https://github.com/mlengse/docusaurus-search-local/compare/v0.9.2...v0.9.3) (2022-01-13)
 
 ### Bug Fixes
 
-- support trailingSlash = false ([371d60a](https://github.com/cmfcmf/docusaurus-search-local/commit/371d60accd03bbd3465f2d771b476f673b6ce022)), closes [#52](https://github.com/cmfcmf/docusaurus-search-local/issues/52)
+- wrong variable when checking available documentation plugins ([8b04bbf](https://github.com/mlengse/docusaurus-search-local/commit/8b04bbfa277b1a7afd4aeecae48e52f68f4d4f77))
 
-## [0.9.1](https://github.com/cmfcmf/docusaurus-search-local/compare/v0.9.0...v0.9.1) (2021-12-14)
+## [0.9.2](https://github.com/mlengse/docusaurus-search-local/compare/v0.9.1...v0.9.2) (2021-12-14)
 
 ### Bug Fixes
 
-- do not throw error if a search index does not exist ([9a17de6](https://github.com/cmfcmf/docusaurus-search-local/commit/9a17de64d4bfac192d319bd7126af6a1843c0965)), closes [#85](https://github.com/cmfcmf/docusaurus-search-local/issues/85)
+- support trailingSlash = false ([371d60a](https://github.com/mlengse/docusaurus-search-local/commit/371d60accd03bbd3465f2d771b476f673b6ce022)), closes [#52](https://github.com/mlengse/docusaurus-search-local/issues/52)
+
+## [0.9.1](https://github.com/mlengse/docusaurus-search-local/compare/v0.9.0...v0.9.1) (2021-12-14)
+
+### Bug Fixes
+
+- do not throw error if a search index does not exist ([9a17de6](https://github.com/mlengse/docusaurus-search-local/commit/9a17de64d4bfac192d319bd7126af6a1843c0965)), closes [#85](https://github.com/mlengse/docusaurus-search-local/issues/85)
 
 ### Features
 
-- update @algolia/autocomplete-js to 1.5.1 ([5631755](https://github.com/cmfcmf/docusaurus-search-local/commit/5631755cf13b8610e2a68f7a1298f3f97f8568bb))
+- update @algolia/autocomplete-js to 1.5.1 ([5631755](https://github.com/mlengse/docusaurus-search-local/commit/5631755cf13b8610e2a68f7a1298f3f97f8568bb))
 
-# [0.9.0](https://github.com/cmfcmf/docusaurus-search-local/compare/v0.8.0...v0.9.0) (2021-12-11)
+# [0.9.0](https://github.com/mlengse/docusaurus-search-local/compare/v0.8.0...v0.9.0) (2021-12-11)
 
 ### Features
 
-- split indexes by plugin and documentation versions ([2953045](https://github.com/cmfcmf/docusaurus-search-local/commit/295304582682d6bd27839454f609dc0e88d029a2))
-- support up to Docusaurus v2.0.0-beta13 ([e74750f](https://github.com/cmfcmf/docusaurus-search-local/commit/e74750f5ea906f759a8b5c81c7397d12f4d6de9e)), closes [#82](https://github.com/cmfcmf/docusaurus-search-local/issues/82) [#83](https://github.com/cmfcmf/docusaurus-search-local/issues/83)
+- split indexes by plugin and documentation versions ([2953045](https://github.com/mlengse/docusaurus-search-local/commit/295304582682d6bd27839454f609dc0e88d029a2))
+- support up to Docusaurus v2.0.0-beta13 ([e74750f](https://github.com/mlengse/docusaurus-search-local/commit/e74750f5ea906f759a8b5c81c7397d12f4d6de9e)), closes [#82](https://github.com/mlengse/docusaurus-search-local/issues/82) [#83](https://github.com/mlengse/docusaurus-search-local/issues/83)
 
 ### BREAKING CHANGES
 

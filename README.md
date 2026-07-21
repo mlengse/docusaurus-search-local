@@ -1,10 +1,10 @@
 # Offline / Local Search for Docusaurus v3+
 
 [![Version](https://img.shields.io/npm/v/@cmfcmf/docusaurus-search-local?style=flat-square)](https://www.npmjs.com/package/@cmfcmf/docusaurus-search-local)
-[![License](https://img.shields.io/npm/l/@cmfcmf/docusaurus-search-local?style=flat-square)](https://github.com/cmfcmf/docusaurus-search-local/blob/main/LICENSE)
+[![License](https://img.shields.io/npm/l/@cmfcmf/docusaurus-search-local?style=flat-square)](https://github.com/mlengse/docusaurus-search-local/blob/main/LICENSE)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
-[![GitHub issues](https://img.shields.io/github/issues/cmfcmf/docusaurus-search-local?style=flat-square)](https://github.com/cmfcmf/docusaurus-search-local/issues)
-[![GitHub last commit](https://img.shields.io/github/last-commit/cmfcmf/docusaurus-search-local?style=flat-square)](https://github.com/cmfcmf/docusaurus-search-local/commits)
+[![GitHub issues](https://img.shields.io/github/issues/mlengse/docusaurus-search-local?style=flat-square)](https://github.com/mlengse/docusaurus-search-local/issues)
+[![GitHub last commit](https://img.shields.io/github/last-commit/mlengse/docusaurus-search-local?style=flat-square)](https://github.com/mlengse/docusaurus-search-local/commits)
 
 Offline / local search for Docusaurus **v3+** that works behind your firewall.
 
@@ -94,7 +94,7 @@ The following options are available (defaults are shown below):
   // https://www.algolia.com/doc/ui-libraries/autocomplete/api-reference/autocomplete-theme-classic/
   // When you want to overwrite CSS variables defined by the default theme, make sure to suffix your
   // overwrites with `!important`, because they might otherwise not be applied as expected. See the
-  // following comment for more information: https://github.com/cmfcmf/docusaurus-search-local/issues/107#issuecomment-1119831938.
+  // following comment for more information: https://github.com/mlengse/docusaurus-search-local/issues/107#issuecomment-1119831938.
   style: undefined,
 
   // The maximum number of search results shown to the user. This does _not_ affect performance of
