@@ -121,9 +121,6 @@ importers:
       cheerio:
         specifier: ^1.0.0
         version: 1.0.0
-      clsx:
-        specifier: ^2.0.0
-        version: 2.1.1
       lunr:
         specifier: github:mlengse/lunr.js
         version: https://codeload.github.com/mlengse/lunr.js/tar.gz/8dd2d9e7dda851c7d4cb6ab1beb07153f7070494
