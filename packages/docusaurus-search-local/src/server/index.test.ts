@@ -1,6 +1,9 @@
-const { validateOptions } = require("./index");
+import { validateOptions } from "./index";
 
-const validate = (schema, options) => {
+const validate = <TInput, TOutput>(
+  schema: { validate: (options: TInput) => { error?: Error; value: TOutput } },
+  options: TInput,
+): TOutput => {
   const result = schema.validate(options);
   if (result.error) {
     throw result.error;
@@ -30,11 +33,11 @@ const DEFAULT_OPTIONS = {
 
 it("validates options correctly", () => {
   expect(() =>
-    validateOptions({ options: { foo: 123 }, validate }),
+    validateOptions({ options: { foo: 123 }, validate } as any),
   ).toThrowErrorMatchingInlineSnapshot(`""foo" is not allowed"`);
 
   expect(() =>
-    validateOptions({ options: { style: "modern" }, validate }),
+    validateOptions({ options: { style: "modern" }, validate } as any),
   ).toThrowErrorMatchingInlineSnapshot(`""style" must be [none]"`);
 
   expect(validateOptions({ options: {}, validate })).toEqual(DEFAULT_OPTIONS);

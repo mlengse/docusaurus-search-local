@@ -1,9 +1,6 @@
-const fs = require("fs");
-const path = require("path");
-const util = require("util");
-const { html2text } = require("./parse");
-
-const readFileAsync = util.promisify(fs.readFile);
+import fs from "fs";
+import path from "path";
+import { html2text } from "./parse";
 
 beforeEach(() => {
   jest.spyOn(console, "warn").mockImplementation(() => {});
@@ -22,7 +19,7 @@ describe("parser", () => {
   describe("blog", () => {
     it("parses blog pages 1", async () => {
       const htmlPath = path.join(BUILD_PATH, "blog/d-s-l-test/index.html");
-      const html = await readFileAsync(htmlPath, "utf-8");
+      const html = await fs.promises.readFile(htmlPath, "utf-8");
       expect(html2text(html, "blog")).toEqual({
         docSidebarParentCategories: undefined,
         pageTitle: "BLOG POST TITLE",
@@ -46,7 +43,7 @@ describe("parser", () => {
     });
     it("parses blog pages 2", async () => {
       const htmlPath = path.join(BUILD_PATH, "blog/d-s-l-test2/index.html");
-      const html = await readFileAsync(htmlPath, "utf-8");
+      const html = await fs.promises.readFile(htmlPath, "utf-8");
       expect(html2text(html, "blog")).toEqual({
         docSidebarParentCategories: undefined,
         pageTitle: "d-s-l-test2",
@@ -70,7 +67,7 @@ describe("parser", () => {
     });
     it("parses blog pages 3", async () => {
       const htmlPath = path.join(BUILD_PATH, "blog/d-s-l-test3/index.html");
-      const html = await readFileAsync(htmlPath, "utf-8");
+      const html = await fs.promises.readFile(htmlPath, "utf-8");
       expect(html2text(html, "blog")).toEqual({
         docSidebarParentCategories: undefined,
         pageTitle: "FIRST HEADER",
@@ -93,7 +90,7 @@ describe("parser", () => {
     });
     it("parses blog pages 4", async () => {
       const htmlPath = path.join(BUILD_PATH, "blog/d-s-l-test4/index.html");
-      const html = await readFileAsync(htmlPath, "utf-8");
+      const html = await fs.promises.readFile(htmlPath, "utf-8");
       expect(html2text(html, "blog")).toEqual({
         docSidebarParentCategories: undefined,
         pageTitle: "BLOG POST TITLE",
@@ -119,7 +116,7 @@ describe("parser", () => {
   describe("docs", () => {
     it("parses normal pages", async () => {
       const htmlPath = path.join(BUILD_PATH, "docs/d-s-l-test/index.html");
-      const html = await readFileAsync(htmlPath, "utf-8");
+      const html = await fs.promises.readFile(htmlPath, "utf-8");
       expect(html2text(html, "docs")).toEqual({
         docSidebarParentCategories: ["Docusaurus"],
         pageTitle: "FIRST HEADER",
@@ -166,7 +163,7 @@ describe("parser", () => {
 
     it("parses empty page", async () => {
       const htmlPath = path.join(BUILD_PATH, "docs/d-s-l-test2/index.html");
-      const html = await readFileAsync(htmlPath, "utf-8");
+      const html = await fs.promises.readFile(htmlPath, "utf-8");
       expect(html2text(html, "docs")).toEqual({
         docSidebarParentCategories: ["Docusaurus"],
         pageTitle: "DOC TITLE",
@@ -179,7 +176,7 @@ describe("parser", () => {
         BUILD_PATH,
         "docs/next/d-s-l-test-no-title-h1/index.html",
       );
-      const html = await readFileAsync(htmlPath, "utf-8");
+      const html = await fs.promises.readFile(htmlPath, "utf-8");
       expect(html2text(html, "docs")).toEqual({
         docSidebarParentCategories: ["Docusaurus"],
         pageTitle: "Page title from markdown",
@@ -199,7 +196,7 @@ describe("parser", () => {
         BUILD_PATH,
         "docs/next/d-s-l-test-no-title-h2/index.html",
       );
-      const html = await readFileAsync(htmlPath, "utf-8");
+      const html = await fs.promises.readFile(htmlPath, "utf-8");
       expect(html2text(html, "docs")).toEqual({
         docSidebarParentCategories: ["Docusaurus"],
         pageTitle: "d-s-l-test-no-title-h2",
@@ -220,7 +217,7 @@ describe("parser", () => {
         BUILD_PATH,
         "docs/next/d-s-l-test-no-title-h1-pre-text/index.html",
       );
-      const html = await readFileAsync(htmlPath, "utf-8");
+      const html = await fs.promises.readFile(htmlPath, "utf-8");
       expect(html2text(html, "docs")).toEqual({
         docSidebarParentCategories: ["Docusaurus"],
         pageTitle: "Page title from markdown",
@@ -246,7 +243,7 @@ describe("parser", () => {
         BUILD_PATH,
         "docs/next/nested_sidebar_doc/index.html",
       );
-      const html = await readFileAsync(htmlPath, "utf-8");
+      const html = await fs.promises.readFile(htmlPath, "utf-8");
       expect(html2text(html, "docs")).toEqual({
         docSidebarParentCategories: ["SidebarParent", "SidebarChild"],
         pageTitle: "NestedSidebarDoc",
@@ -263,7 +260,7 @@ describe("parser", () => {
 
     it("parses page with first header directly after title", async () => {
       const htmlPath = path.join(BUILD_PATH, "docs/d-s-l-test3/index.html");
-      const html = await readFileAsync(htmlPath, "utf-8");
+      const html = await fs.promises.readFile(htmlPath, "utf-8");
       expect(html2text(html, "docs")).toEqual({
         docSidebarParentCategories: ["Docusaurus"],
         pageTitle: "DOC TITLE",

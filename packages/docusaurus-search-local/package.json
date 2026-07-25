@@ -30,8 +30,8 @@
     "@algolia/client-search": "^4.12.0",
     "algoliasearch": "^4.12.0",
     "cheerio": "^1.0.0",
-    "lunr": "github:mlengse/lunr.js",
-    "lunr-languages": "^1.4.0",
+    "lunr": "github:mlengse/lunr.js#1e5ec8fd03eb77e617b4540ed96ec9195c54c2d7",
+    "lunr-languages": "github:mlengse/lunr-languages#d59512f07947c1bb52992e45f9c37cb2ec6a96e5",
     "mark.js": "^8.11.1",
     "tslib": "^2.6.3"
   },
@@ -47,10 +47,10 @@
     }
   },
   "devDependencies": {
-    "@babel/cli": "^7.16.8",
-    "@babel/core": "^7.21.0",
-    "@babel/preset-env": "^7.20.2",
-    "@babel/preset-typescript": "^7.21.0",
+    "@babel/cli": "^7.29.0",
+    "@babel/core": "^7.29.6",
+    "@babel/preset-env": "^7.29.2",
+    "@babel/preset-typescript": "^7.29.0",
     "@docusaurus/module-type-aliases": "catalog:",
     "@docusaurus/plugin-content-blog": "catalog:",
     "@docusaurus/plugin-content-docs": "catalog:",
@@ -65,16 +65,17 @@
     "@types/mark.js": "^8.11.7",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
-    "babel-jest": "^29.4.3",
-    "concurrently": "^7.0.0",
+    "babel-jest": "^29.7.0",
+    "concurrently": "^9.1.2",
     "copyfiles": "^2.4.1",
-    "jest": "^29.4.3",
+    "domhandler": "^5.0.3",
+    "jest": "^29.7.0",
     "nodejieba": "^2.5.0 || ^3.0.0",
-    "nodemon": "^2.0.15",
+    "nodemon": "^3.1.9",
     "playwright": "^1.31.1",
     "react": "catalog:",
     "react-dom": "catalog:",
-    "typescript": "^5.0.0"
+    "typescript": "^5.8.3"
   },
   "scripts": {
     "build:client": "tsc --project tsconfig.client.json && copyfiles --up 1 src/client/**/*.css lib",

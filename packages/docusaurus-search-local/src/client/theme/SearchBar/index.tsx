@@ -24,7 +24,7 @@ type MyItem = {
 
 function getItemUrl({ document }: MyItem): string {
   const [path, hash] = document.sectionRoute.split("#");
-  let url = path!;
+  let url = path ?? document.sectionRoute;
   if (hash) {
     url += "#" + hash;
   }
@@ -50,11 +50,16 @@ async function fetchIndex(
       const response = await fetch(`${baseUrl}search-index-${tag}.json`);
       if (!response.ok) return EMPTY_INDEX;
       json = await response.json();
+      if (!json || !Array.isArray(json.documents) || !json.index) {
+        console.warn("[Local Search] Invalid search index format");
+        return EMPTY_INDEX;
+      }
     } catch (err) {
       // An index might not actually exist if no pages for it have been indexed.
       // https://github.com/mlengse/docusaurus-search-local/issues/85
-      // TODO: we should somehow pass the names of indexes that exist to the
-      // client at build time instead of catching the error here.
+      if (err instanceof TypeError || (err instanceof Error && err.message.includes("fetch"))) {
+        console.warn("[Local Search] Failed to fetch index:", err.message);
+      }
       return EMPTY_INDEX;
     }
 
@@ -189,7 +194,7 @@ const SearchBar = () => {
         createElement,
         Fragment,
         render: (component, container) =>
-          createRoot(container as any).render(component),
+          createRoot(container as HTMLElement).render(component),
       },
       // Use react-router for navigation
       navigator: {
@@ -365,13 +370,14 @@ const SearchBar = () => {
                       }
                     })
                     .slice(0, maxSearchResults)
-                    .map((result) => ({
-                      document: documents.find(
-                        (document) => document.id.toString() === result.ref,
-                      )!,
-                      score: result.score,
-                      terms,
-                    })),
+                    .map((result) => {
+                      const document = documents.find(
+                        (d) => d.id.toString() === result.ref,
+                      );
+                      if (!document) return null;
+                      return { document, score: result.score, terms };
+                    })
+                    .filter((r): r is NonNullable<typeof r> => r !== null),
                 )
                 .sort((a, b) => b.score - a.score)
                 .slice(0, maxSearchResults);

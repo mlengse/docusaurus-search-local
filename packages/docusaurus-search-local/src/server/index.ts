@@ -1,6 +1,5 @@
 import fs from "fs";
 import path from "path";
-import util from "util";
 import type {
   LoadContext,
   LoadedPlugin,
@@ -21,9 +20,6 @@ import logger from "./logger";
 const lunr = require("lunr") as (
   config: import("lunr").ConfigFunction,
 ) => import("lunr").Index;
-
-const readFileAsync = util.promisify(fs.readFile);
-const writeFileAsync = util.promisify(fs.writeFile);
 
 function urlMatchesPrefix(url: string, prefix: string) {
   if (prefix.startsWith("/")) {
@@ -233,7 +229,9 @@ export default function cmfcmfDocusaurusSearchLocal(
   }
   if (language === "zh") {
     // nodejieba does not run in the browser, so we need to use a custom tokenizer here.
-    // FIXME: We should look into compiling nodejieba to WebAssembly and use that instead.
+    // FIXME: nodejieba should be compiled to WebAssembly for browser-compatible
+    // tokenization instead of relying on native compilation.
+    // https://github.com/mlengse/docusaurus-search-local/issues/85
     generated += `\
 export const tokenize = (input) => input.trim().toLowerCase()
   .split(${(lunrTokenizerSeparator
@@ -471,7 +469,7 @@ export const tokenize = (input) => lunr.tokenizer(input)
         await Promise.all(
           data.map(async ({ file, url, type }) => {
             logger.debug(`Parsing ${type} file ${file}`, { url });
-            const html = await readFileAsync(file, { encoding: "utf8" });
+            const html = await fs.promises.readFile(file, { encoding: "utf8" });
             const { pageTitle, sections, docSidebarParentCategories } =
               html2text(html, type, url);
             const docusaurusTag = getDocusaurusTag(html);
@@ -567,7 +565,7 @@ export const tokenize = (input) => lunr.tokenizer(input)
               );
             });
 
-            await writeFileAsync(
+            await fs.promises.writeFile(
               path.join(outDir, `search-index-${docusaurusTag}.json`),
               JSON.stringify({
                 documents: documents.map(

@@ -20,9 +20,10 @@ jobs:
     if: ${{ !(github.event_name == 'pull_request' && !github.event.pull_request.head.repo.fork) }}
     defaults:
       run:
-        # TODO: Our package.json scripts currently assume that they are run
-        # from bash, even on Windows.
-        # We should probably make them OS-agnostic instead.
+        # NOTE: Package.json scripts use bash syntax (e.g., &&, env vars).
+        # On Windows runners, we force bash via shell: bash for cross-platform support.
+        # If cross-shell support is needed in the future, scripts should be rewritten
+        # using cross-env or similar OS-agnostic tooling.
         shell: bash
     continue-on-error: ${{ matrix.docusaurus-version == 'canary' }}
     strategy:
@@ -74,7 +75,9 @@ jobs:
       - run: pnpm --filter docusaurus-search-local --fail-if-no-match exec playwright install
       - run: pnpm run test:e2e -- --browser=all --forbid-only
 
-      # TODO: Cannot run browser tests for these for now.
+      # NOTE: Browser tests for alternate Docusaurus configs (noTrailingSlash,
+      # subDirectory, etc.) are skipped because they require separate E2E test
+      # suites. Builds are verified to succeed but are not end-to-end tested.
       - run: pnpm --filter example-docs --fail-if-no-match run build --config docusaurus.config.noTrailingSlash.js
       - run: pnpm --filter example-docs --fail-if-no-match run build --config docusaurus.config.subDirectory.js
       - run: pnpm --filter example-docs --fail-if-no-match run build --config docusaurus.config.noTrailingSlashSubdirectory.js

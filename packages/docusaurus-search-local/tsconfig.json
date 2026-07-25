@@ -32,6 +32,7 @@
 
     /* Advanced Options */
     "resolveJsonModule": true,
+    "skipLibCheck": true,
 
     /* Use tslib */
     "importHelpers": true,
