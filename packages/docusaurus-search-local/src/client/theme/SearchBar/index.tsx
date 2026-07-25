@@ -57,7 +57,10 @@ async function fetchIndex(
     } catch (err) {
       // An index might not actually exist if no pages for it have been indexed.
       // https://github.com/mlengse/docusaurus-search-local/issues/85
-      if (err instanceof TypeError || (err instanceof Error && err.message.includes("fetch"))) {
+      if (
+        err instanceof TypeError ||
+        (err instanceof Error && err.message.includes("fetch"))
+      ) {
         console.warn("[Local Search] Failed to fetch index:", err.message);
       }
       return EMPTY_INDEX;
