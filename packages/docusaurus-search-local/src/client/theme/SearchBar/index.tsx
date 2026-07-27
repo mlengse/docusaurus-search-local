@@ -143,7 +143,10 @@ const SearchBar = () => {
       string,
       | {
           state: "loading";
-          callbacks: Array<(index: IndexWithDocuments) => void>;
+          callbacks: Array<{
+            resolve: (index: IndexWithDocuments) => void;
+            reject: (error: unknown) => void;
+          }>;
         }
       | ({ state: "ready" } & IndexWithDocuments)
     >
@@ -155,23 +158,31 @@ const SearchBar = () => {
       case "ready":
         return index;
       case undefined: {
-        const callbacks: Array<(index: IndexWithDocuments) => void> = [];
+        const callbacks: Array<{
+          resolve: (index: IndexWithDocuments) => void;
+          reject: (error: unknown) => void;
+        }> = [];
         indexes.current[tag] = {
           state: "loading",
           callbacks,
         };
-        const index = await fetchIndex(baseUrl, tag);
-        callbacks.forEach((cb) => cb(index));
+        try {
+          const fetchedIndex = await fetchIndex(baseUrl, tag);
+          callbacks.forEach((cb) => cb.resolve(fetchedIndex));
 
-        indexes.current[tag] = {
-          state: "ready",
-          ...index,
-        };
-        return index;
+          indexes.current[tag] = {
+            state: "ready",
+            ...fetchedIndex,
+          };
+          return fetchedIndex;
+        } catch (err) {
+          callbacks.forEach((cb) => cb.reject(err));
+          throw err;
+        }
       }
       case "loading":
-        return new Promise<IndexWithDocuments>((resolve) => {
-          index.callbacks.push(resolve);
+        return new Promise<IndexWithDocuments>((resolve, reject) => {
+          index.callbacks.push({ resolve, reject });
         });
     }
   };

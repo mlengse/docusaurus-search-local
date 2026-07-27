@@ -90,3 +90,37 @@ test("dark mode is copied from <html> to <body> correctly", async ({
   await page.locator("svg[class*='darkToggleIcon']").click();
   await check("light");
 });
+
+test("blog search returns results", async ({ page }) => {
+  await page.goto("/");
+  await search(page, "blog post title");
+
+  // Should navigate to a blog post
+  await page.waitForURL(/\/blog\//);
+  await expect(page.locator('mark[data-markjs="true"]')).toBeVisible();
+});
+
+test("search with no results shows empty state", async ({ page }) => {
+  await page.goto("/");
+  const searchFieldButton = page.locator(".dsla-search-field button");
+  searchFieldButton.click();
+
+  await expect(page.locator(".aa-Input")).toBeFocused();
+  await page.fill(".aa-Input", "zzzznonexistentqueryzzzz");
+  await page.press(".aa-Input", "Enter");
+
+  // Should show no results message
+  await expect(page.locator(".aa-Panel")).toBeVisible();
+  await expect(page.locator(".aa-Item")).toHaveCount(0);
+});
+
+test("search on static page works", async ({ page }) => {
+  await page.goto("/");
+
+  // The index.html page should be searchable if indexPages is enabled
+  const searchFieldButton = page.locator(".dsla-search-field button");
+  searchFieldButton.click();
+  await expect(page.locator(".aa-Input")).toBeFocused();
+  await page.fill(".aa-Input", "Index");
+  await page.press(".aa-Input", "Escape");
+});

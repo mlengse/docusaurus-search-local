@@ -1,6 +1,6 @@
 import fs from "fs";
 import path from "path";
-import { html2text } from "./parse";
+import { html2text, getDocusaurusTag } from "./parse";
 
 beforeEach(() => {
   jest.spyOn(console, "warn").mockImplementation(() => {});
@@ -385,5 +385,32 @@ describe("parser", () => {
         ],
       });
     });
+  });
+});
+
+describe("getDocusaurusTag", () => {
+  it("returns the tag when present", () => {
+    const html = `<html><head><meta name="docusaurus_tag" content="default"></head><body></body></html>`;
+    expect(getDocusaurusTag(html)).toBe("default");
+  });
+
+  it("returns the tag for versioned pages", () => {
+    const html = `<html><head><meta name="docusaurus_tag" content="docs-default-1.0.0"></head><body></body></html>`;
+    expect(getDocusaurusTag(html)).toBe("docs-default-1.0.0");
+  });
+
+  it("throws when the meta tag is missing", () => {
+    const html = `<html><head></head><body></body></html>`;
+    expect(() => getDocusaurusTag(html)).toThrow("docusaurus_tag");
+  });
+
+  it("throws when the content attribute is empty", () => {
+    const html = `<html><head><meta name="docusaurus_tag" content=""></head><body></body></html>`;
+    expect(() => getDocusaurusTag(html)).toThrow("docusaurus_tag");
+  });
+
+  it("throws when the content attribute is absent", () => {
+    const html = `<html><head><meta name="docusaurus_tag"></head><body></body></html>`;
+    expect(() => getDocusaurusTag(html)).toThrow("docusaurus_tag");
   });
 });

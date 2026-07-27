@@ -1,8 +1,7 @@
 import Mark from "mark.js";
 import { useEffect, useState } from "react";
-import { useLocation } from "@docusaurus/router";
+import { useLocation, useHistory } from "@docusaurus/router";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
-import { useHistory } from "@docusaurus/router";
 
 export type DSLALocationState = {
   cmfcmfhighlight?: { terms: string[]; isDocsOrBlog: boolean };

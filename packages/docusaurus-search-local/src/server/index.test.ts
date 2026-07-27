@@ -1,4 +1,10 @@
-import { validateOptions } from "./index";
+import {
+  validateOptions,
+  trimLeadingSlash,
+  trimTrailingSlash,
+  urlMatchesPrefix,
+  codeTranslationLocalesToTry,
+} from "./index";
 
 const validate = <TInput, TOutput>(
   schema: { validate: (options: TInput) => { error?: Error; value: TOutput } },
@@ -79,4 +85,97 @@ it("validates options correctly", () => {
   };
 
   expect(validateOptions({ options, validate })).toEqual(options);
+});
+
+describe("trimLeadingSlash", () => {
+  it("strips a single leading slash", () => {
+    expect(trimLeadingSlash("/foo")).toBe("foo");
+  });
+
+  it("returns empty string for slash-only input", () => {
+    expect(trimLeadingSlash("/")).toBe("");
+  });
+
+  it("returns path unchanged if no leading slash", () => {
+    expect(trimLeadingSlash("foo")).toBe("foo");
+  });
+
+  it("returns empty string for empty input", () => {
+    expect(trimLeadingSlash("")).toBe("");
+  });
+
+  it("only strips the first slash", () => {
+    expect(trimLeadingSlash("//foo")).toBe("/foo");
+  });
+});
+
+describe("trimTrailingSlash", () => {
+  it("strips a single trailing slash", () => {
+    expect(trimTrailingSlash("foo/")).toBe("foo");
+  });
+
+  it("returns empty string for slash-only input", () => {
+    expect(trimTrailingSlash("/")).toBe("");
+  });
+
+  it("returns path unchanged if no trailing slash", () => {
+    expect(trimTrailingSlash("foo")).toBe("foo");
+  });
+
+  it("returns empty string for empty input", () => {
+    expect(trimTrailingSlash("")).toBe("");
+  });
+
+  it("only strips the last slash", () => {
+    expect(trimTrailingSlash("foo//")).toBe("foo/");
+  });
+});
+
+describe("urlMatchesPrefix", () => {
+  it("returns true for empty prefix (matches everything)", () => {
+    expect(urlMatchesPrefix("docs/getting-started", "")).toBe(true);
+  });
+
+  it("returns true for exact match", () => {
+    expect(urlMatchesPrefix("docs", "docs")).toBe(true);
+  });
+
+  it("returns true for subpath match", () => {
+    expect(urlMatchesPrefix("docs/getting-started", "docs")).toBe(true);
+  });
+
+  it("returns false for no match", () => {
+    expect(urlMatchesPrefix("blog/my-post", "docs")).toBe(false);
+  });
+
+  it("throws if prefix starts with /", () => {
+    expect(() => urlMatchesPrefix("docs", "/docs")).toThrow(
+      "prefix must not start with a /",
+    );
+  });
+
+  it("throws if prefix ends with /", () => {
+    expect(() => urlMatchesPrefix("docs", "docs/")).toThrow(
+      "prefix must not end with a /",
+    );
+  });
+});
+
+describe("codeTranslationLocalesToTry", () => {
+  it("returns just the locale for simple language codes", () => {
+    const result = codeTranslationLocalesToTry("en");
+    expect(result[0]).toBe("en");
+    expect(result.length).toBeGreaterThanOrEqual(1);
+  });
+
+  it("returns locale with region fallback for region-specific locales", () => {
+    const result = codeTranslationLocalesToTry("pt-BR");
+    expect(result).toContain("pt-BR");
+    expect(result).toContain("pt");
+  });
+
+  it("returns just the locale for 'de'", () => {
+    const result = codeTranslationLocalesToTry("de");
+    expect(result[0]).toBe("de");
+  });
 });

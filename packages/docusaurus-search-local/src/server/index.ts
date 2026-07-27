@@ -21,7 +21,7 @@ const lunr = require("lunr") as (
   config: import("lunr").ConfigFunction,
 ) => import("lunr").Index;
 
-function urlMatchesPrefix(url: string, prefix: string) {
+export function urlMatchesPrefix(url: string, prefix: string) {
   if (prefix.startsWith("/")) {
     throw new Error(
       `prefix must not start with a /. This is a bug (url: "${url}", prefix: ${prefix}).`,
@@ -35,14 +35,14 @@ function urlMatchesPrefix(url: string, prefix: string) {
   return prefix === "" || url === prefix || url.startsWith(`${prefix}/`);
 }
 
-function trimLeadingSlash(path: string) {
+export function trimLeadingSlash(path: string) {
   if (!path || !path.startsWith("/")) {
     return path;
   }
   return path.slice(1);
 }
 
-function trimTrailingSlash(path: string) {
+export function trimTrailingSlash(path: string) {
   if (!path || !path.endsWith("/")) {
     return path;
   }
@@ -51,7 +51,7 @@ function trimTrailingSlash(path: string) {
 
 // Copied from Docusaurus, licensed under the MIT License.
 // https://github.com/facebook/docusaurus/blob/63bd6b9025be282b50adbc65176598c96fd4f7e9/packages/docusaurus-theme-translations/src/index.ts#L20-L36
-function codeTranslationLocalesToTry(locale: string): string[] {
+export function codeTranslationLocalesToTry(locale: string): string[] {
   const intlLocale = Intl.Locale ? new Intl.Locale(locale) : undefined;
   if (!intlLocale) {
     return [locale];
@@ -281,10 +281,12 @@ export const tokenize = (input) => lunr.tokenizer(input)
       );
       for (const locale of localesToTry) {
         const translationPath = path.join(translationsDir, `${locale}.json`);
-        if (fs.existsSync(translationPath)) {
+        try {
           return JSON.parse(
             await fs.promises.readFile(translationPath, "utf8"),
           );
+        } catch {
+          // File does not exist or is malformed — try next locale.
         }
       }
 
@@ -468,24 +470,36 @@ export const tokenize = (input) => lunr.tokenizer(input)
       const documents = (
         await Promise.all(
           data.map(async ({ file, url, type }) => {
-            logger.debug(`Parsing ${type} file ${file}`, { url });
-            const html = await fs.promises.readFile(file, { encoding: "utf8" });
-            const { pageTitle, sections, docSidebarParentCategories } =
-              html2text(html, type, url);
-            const docusaurusTag = getDocusaurusTag(html);
+            try {
+              logger.debug(`Parsing ${type} file ${file}`, { url });
+              const html = await fs.promises.readFile(file, {
+                encoding: "utf8",
+              });
+              const { pageTitle, sections, docSidebarParentCategories } =
+                html2text(html, type, url);
+              const docusaurusTag = getDocusaurusTag(html);
 
-            return sections.map((section) => ({
-              id: nextDocId++,
-              pageTitle,
-              pageRoute: url,
-              sectionRoute: url + section.hash,
-              sectionTitle: section.title,
-              sectionContent: section.content,
-              sectionTags: section.tags,
-              docusaurusTag,
-              docSidebarParentCategories,
-              type,
-            }));
+              return sections.map((section) => ({
+                id: nextDocId++,
+                pageTitle,
+                pageRoute: url,
+                sectionRoute: url + section.hash,
+                sectionTitle: section.title,
+                sectionContent: section.content,
+                sectionTags: section.tags,
+                docusaurusTag,
+                docSidebarParentCategories,
+                type,
+              }));
+            } catch (err) {
+              logger.warn(
+                `Failed to parse ${type} file ${file}: ${
+                  err instanceof Error ? err.message : err
+                }`,
+                { url },
+              );
+              return [];
+            }
           }),
         )
       ).flat();
