@@ -108,7 +108,7 @@ The following options are available (defaults are shown below):
     // This setting configures the separator used to determine where to split the text into tokens.
     // By default, it splits the text at whitespace and dashes.
     //
-    // Note: Does not work for "ja" and "th" languages, since these use a different tokenizer.
+    // Note: Does not work for "zh", "ja", and "th" languages, since these use a different tokenizer.
     tokenizerSeparator: /[\s\-]+/,
     // https://lunrjs.com/guides/customising.html#similarity-tuning
     //
@@ -148,7 +148,7 @@ The following languages are available:
 
     ar, da, de, en, es, fi, fr, hi, hu, it, ja, nl, no, pt, ro, ru, sv, th, tr, vi, zh
 
-**Important: For Chinese language support (`zh`), you also have to install the `nodejieba` npm package at `^2.5.0 || ^3.0.0`.**
+**Important: Chinese language support (`zh`) requires no extra installation. The tokenizer ships with the `mlengse/lunr-languages` fork using `@node-rs/jieba` (WASM), which works both server-side and in the browser.**
 
 ### Documentation Versions
 

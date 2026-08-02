@@ -17,9 +17,14 @@ import type { DSLAPluginData, MyDocument } from "../types";
 import { html2text, getDocusaurusTag } from "./parse";
 import logger from "./logger";
 
-const lunr = require("lunr") as (
-  config: import("lunr").ConfigFunction,
-) => import("lunr").Index;
+type LunrLanguagePlugin = import("lunr").Builder.Plugin;
+
+const lunr = require("lunr") as typeof import("lunr") & {
+  // Members added at runtime by lunr-languages that are not part of the
+  // official lunr typings.
+  wordcut: (str: string) => string[];
+  multiLanguage: (...languages: string[]) => LunrLanguagePlugin;
+};
 
 export function urlMatchesPrefix(url: string, prefix: string) {
   if (prefix.startsWith("/")) {
@@ -69,6 +74,17 @@ export function codeTranslationLocalesToTry(locale: string): string[] {
   }
 }
 
+// Docusaurus tags are used as part of the search index filename, so they must
+// only contain characters that are safe on any file system. Docusaurus itself
+// only emits tags matching [A-Za-z0-9._-] (e.g. `default`, `docs-default-1.0.0`),
+// so this is defense-in-depth against malformed or malicious values.
+export function sanitizeDocusaurusTag(tag: string): string {
+  const sanitized = tag
+    .replace(/[^A-Za-z0-9._-]/g, "")
+    .replace(/^[._-]+|[._-]+$/g, "");
+  return sanitized || "default";
+}
+
 type MyOptions = {
   indexDocs: boolean;
   indexDocSidebarParentCategories: number;
@@ -79,7 +95,7 @@ type MyOptions = {
   style?: "none";
   maxSearchResults: number;
   lunr: {
-    tokenizerSeparator?: string;
+    tokenizerSeparator?: RegExp;
     k1: number;
     b: number;
     titleBoost: number;
@@ -147,34 +163,47 @@ const optionsSchema = Joi.object({
   }).default(),
 });
 
-export default function cmfcmfDocusaurusSearchLocal(
-  context: LoadContext,
-  options: MyOptions,
-): Plugin<unknown> {
-  let {
-    indexDocSidebarParentCategories,
-    includeParentCategoriesInPageTitle,
-    indexBlog,
-    indexDocs,
-    indexPages,
-    language,
-    style,
-    maxSearchResults,
-    lunr: {
-      tokenizerSeparator: lunrTokenizerSeparator,
-      k1,
-      b,
-      titleBoost,
-      contentBoost,
-      tagsBoost,
-      parentCategoriesBoost,
-    },
-  } = options;
+// Emits the client-side multi-language tokenizer that mirrors the tokenizer
+// used by lunr-languages' `lunr.multiLanguage` when building the index, so
+// that queries are tokenized exactly like the indexed documents.
+// https://github.com/mlengse/docusaurus-search-local/issues/85
+function emitMultiLanguageTokenizer(codes: string[]): string {
+  const codeList = codes.map((code) => JSON.stringify(code)).join(", ");
+  return `\
+lunr.tokenizer = (() => {
+  const defaultTokenizer = lunr.tokenizer;
+  const separator = lunr.tokenizer.separator;
+  const multiTokenizer = (input) => {
+    const tokens = defaultTokenizer(input);
+    const seen = {};
+    tokens.forEach((t) => { seen[t.toString()] = true; });
+    [${codeList}].forEach((code) => {
+      const language = lunr[code];
+      if (language === undefined || typeof language.tokenizer === "undefined") return;
+      language.tokenizer(input).forEach((token) => {
+        const tokenString = token.toString();
+        if (seen[tokenString]) return;
+        seen[tokenString] = true;
+        tokens.push(token);
+      });
+    });
+    return tokens;
+  };
+  multiTokenizer.separator = separator;
+  return multiTokenizer;
+})();\n`;
+}
 
-  if (lunrTokenizerSeparator) {
-    // @ts-expect-error
-    lunr.tokenizer.separator = lunrTokenizerSeparator;
-  }
+export function generateClientModule(options: {
+  style?: "none";
+  language: string | string[];
+  lunr: { tokenizerSeparator?: RegExp };
+}): string {
+  const {
+    style,
+    lunr: { tokenizerSeparator: lunrTokenizerSeparator },
+  } = options;
+  let { language } = options;
 
   if (Array.isArray(language) && language.length === 1) {
     language = language[0]!;
@@ -201,8 +230,6 @@ export default function cmfcmfDocusaurusSearchLocal(
       require("lunr-languages/tinyseg")(lunr);
       generated += `require("lunr-languages/tinyseg")(lunr);\n`;
     } else if (code === "th" || code === "hi") {
-      // @ts-expect-error see
-      // https://github.com/MihaiValentin/lunr-languages/blob/a62fec97fb1a62bb4581c9b69a5ddedf62f8f62f/test/VersionsAndLanguagesTest.js#L110-L112
       lunr.wordcut = require("lunr-languages/wordcut");
       generated += `lunr.wordcut = require("lunr-languages/wordcut");\n`;
     }
@@ -223,22 +250,26 @@ export default function cmfcmfDocusaurusSearchLocal(
         });
       require("lunr-languages/lunr.multi")(lunr);
       generated += `require("lunr-languages/lunr.multi")(lunr);\n`;
+      generated += emitMultiLanguageTokenizer(
+        language.filter((code) => code !== "en"),
+      );
     } else {
       generated += handleLangCode(language);
     }
   }
   if (language === "zh") {
-    // nodejieba does not run in the browser, so we need to use a custom tokenizer here.
-    // FIXME: nodejieba should be compiled to WebAssembly for browser-compatible
-    // tokenization instead of relying on native compilation.
+    if (lunrTokenizerSeparator) {
+      throw new Error(
+        "The lunr.tokenizerSeparator option is not supported for 'zh'",
+      );
+    }
+    // The lunr-languages Chinese tokenizer uses @node-rs/jieba (WASM) on the
+    // server and falls back to Intl.Segmenter in the browser, so it does not
+    // require any native compilation and can safely be used client-side too.
     // https://github.com/mlengse/docusaurus-search-local/issues/85
     generated += `\
-export const tokenize = (input) => input.trim().toLowerCase()
-  .split(${(lunrTokenizerSeparator
-    ? lunrTokenizerSeparator
-    : /[\s\-]+/
-  ).toString()})
-  .filter(each => !!each);\n`;
+lunr.tokenizer = lunr.zh.tokenizer;\n\
+export const tokenize = (input) => lunr.tokenizer(input).map((token) => token.str);\n`;
   } else if (language === "ja" || language === "th") {
     if (lunrTokenizerSeparator) {
       throw new Error(
@@ -257,9 +288,50 @@ lunr.tokenizer.separator = ${lunrTokenizerSeparator.toString()};\n`;
     }
     generated += `\
 export const tokenize = (input) => lunr.tokenizer(input)
-  .map(token => token.str);\n`;
+  .map(token => typeof token === "string" ? token : token.str);\n`;
   }
   generated += `export const mylunr = lunr;\n`;
+
+  return generated;
+}
+
+export default function cmfcmfDocusaurusSearchLocal(
+  context: LoadContext,
+  options: MyOptions,
+): Plugin<unknown> {
+  let {
+    indexDocSidebarParentCategories,
+    includeParentCategoriesInPageTitle,
+    indexBlog,
+    indexDocs,
+    indexPages,
+    language,
+    style,
+    maxSearchResults,
+    lunr: {
+      tokenizerSeparator: lunrTokenizerSeparator,
+      k1,
+      b,
+      titleBoost,
+      contentBoost,
+      tagsBoost,
+      parentCategoriesBoost,
+    },
+  } = options;
+
+  if (Array.isArray(language) && language.length === 1) {
+    language = language[0]!;
+  }
+
+  if (lunrTokenizerSeparator) {
+    lunr.tokenizer.separator = lunrTokenizerSeparator;
+  }
+
+  const generated = generateClientModule({
+    style,
+    language,
+    lunr: { tokenizerSeparator: lunrTokenizerSeparator },
+  });
 
   return {
     name: "@cmfcmf/docusaurus-search-local",
@@ -504,10 +576,21 @@ export const tokenize = (input) => lunr.tokenizer(input)
         )
       ).flat();
 
+      const warnedDocusaurusTags = new Set<string>();
       const documentsByDocusaurusTag = documents.reduce(
         (acc, doc) => {
-          acc[doc.docusaurusTag] = acc[doc.docusaurusTag] ?? [];
-          acc[doc.docusaurusTag]!.push(doc);
+          const docusaurusTag = sanitizeDocusaurusTag(doc.docusaurusTag);
+          if (
+            docusaurusTag !== doc.docusaurusTag &&
+            !warnedDocusaurusTags.has(doc.docusaurusTag)
+          ) {
+            warnedDocusaurusTags.add(doc.docusaurusTag);
+            logger.warn(
+              `Docusaurus tag "${doc.docusaurusTag}" contains characters that are unsafe in a file name and was sanitized to "${docusaurusTag}" for the search index.`,
+            );
+          }
+          acc[docusaurusTag] = acc[docusaurusTag] ?? [];
+          acc[docusaurusTag]!.push(doc);
           return acc;
         },
         {} as Record<string, typeof documents>,
@@ -529,11 +612,13 @@ export const tokenize = (input) => lunr.tokenizer(input)
             const index = lunr(function () {
               if (language !== "en") {
                 if (Array.isArray(language)) {
-                  // @ts-expect-error
                   this.use(lunr.multiLanguage(...language));
                 } else {
-                  // @ts-expect-error
-                  this.use(lunr[language]);
+                  this.use(
+                    (lunr as unknown as Record<string, LunrLanguagePlugin>)[
+                      language
+                    ],
+                  );
                 }
               }
 

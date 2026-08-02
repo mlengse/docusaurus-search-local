@@ -1,11 +1,10 @@
-const lunr = require("lunr");
-
-const mylunr = lunr;
+const mylunr = jest.fn(() => ({
+  ref: jest.fn(),
+  field: jest.fn(),
+}));
 
 function tokenize(input) {
-  return lunr
-    .tokenizer(input)
-    .map((token) => token.str);
+  return input.split(/\s+/);
 }
 
 module.exports = { mylunr, tokenize };

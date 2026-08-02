@@ -4,6 +4,7 @@ import {
   trimTrailingSlash,
   urlMatchesPrefix,
   codeTranslationLocalesToTry,
+  sanitizeDocusaurusTag,
 } from "./index";
 
 const validate = <TInput, TOutput>(
@@ -177,5 +178,33 @@ describe("codeTranslationLocalesToTry", () => {
   it("returns just the locale for 'de'", () => {
     const result = codeTranslationLocalesToTry("de");
     expect(result[0]).toBe("de");
+  });
+});
+
+describe("sanitizeDocusaurusTag", () => {
+  it("passes through valid tags unchanged", () => {
+    expect(sanitizeDocusaurusTag("default")).toBe("default");
+    expect(sanitizeDocusaurusTag("docs-default-1.0.0")).toBe(
+      "docs-default-1.0.0",
+    );
+    expect(sanitizeDocusaurusTag("blog")).toBe("blog");
+  });
+
+  it("strips characters that are unsafe in a file name", () => {
+    expect(sanitizeDocusaurusTag("../../evil")).toBe("evil");
+    expect(sanitizeDocusaurusTag("foo bar/baz")).toBe("foobarbaz");
+    expect(sanitizeDocusaurusTag("a<b&c>\"'")).toBe("abc");
+  });
+
+  it("strips leading and trailing dots and dashes", () => {
+    expect(sanitizeDocusaurusTag("..hidden")).toBe("hidden");
+    expect(sanitizeDocusaurusTag("-leading")).toBe("leading");
+    expect(sanitizeDocusaurusTag("trailing.")).toBe("trailing");
+    expect(sanitizeDocusaurusTag("trailing-")).toBe("trailing");
+  });
+
+  it("falls back to 'default' when nothing remains", () => {
+    expect(sanitizeDocusaurusTag("///")).toBe("default");
+    expect(sanitizeDocusaurusTag("..")).toBe("default");
   });
 });

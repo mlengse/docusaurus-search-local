@@ -194,6 +194,9 @@ const SearchBar = () => {
 
   const autocompleteRef = useRef<HTMLDivElement>(null);
   const autocompleteApi = useRef<AutocompleteApi<MyItem> | null>(null);
+  const rootsRef = useRef(
+    new Map<HTMLElement, ReturnType<typeof createRoot>>(),
+  );
 
   useEffect(() => {
     if (!autocompleteRef.current) {
@@ -207,8 +210,15 @@ const SearchBar = () => {
       renderer: {
         createElement,
         Fragment,
-        render: (component, container) =>
-          createRoot(container as HTMLElement).render(component),
+        render: (component, container) => {
+          const element = container as HTMLElement;
+          let root = rootsRef.current.get(element);
+          if (!root) {
+            root = createRoot(element);
+            rootsRef.current.set(element, root);
+          }
+          root.render(component);
+        },
       },
       // Use react-router for navigation
       navigator: {
@@ -401,7 +411,10 @@ const SearchBar = () => {
       },
     });
 
-    return () => autocompleteApi.current?.destroy();
+    return () => {
+      autocompleteApi.current?.destroy();
+      rootsRef.current.clear();
+    };
   }, [maxSearchResults]);
 
   return (

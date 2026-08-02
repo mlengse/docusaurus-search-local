@@ -20,8 +20,7 @@ module.exports = {
       moduleNameMapper: {
         "\\.css$": "<rootDir>/src/__mocks__/styleMock.js",
         "d-s-l-a-generated": "<rootDir>/src/__mocks__/d-s-l-a-generated.js",
-        "^@docusaurus/router$":
-          "<rootDir>/src/__mocks__/docusaurus_router.js",
+        "^@docusaurus/router$": "<rootDir>/src/__mocks__/docusaurus_router.js",
         "^@docusaurus/useDocusaurusContext$":
           "<rootDir>/src/__mocks__/docusaurus_useDocusaurusContext.js",
         "^@docusaurus/useGlobalData$":
@@ -32,8 +31,6 @@ module.exports = {
           "<rootDir>/src/__mocks__/docusaurus_Translate.js",
         "^@algolia/autocomplete-js$":
           "<rootDir>/src/__mocks__/algolia_autocomplete-js.js",
-        "^react-dom/client$":
-          "<rootDir>/src/__mocks__/react-dom_client.js",
         "^mark\\.js$": "<rootDir>/src/__mocks__/mark.js.js",
       },
     },
