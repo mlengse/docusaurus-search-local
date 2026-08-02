@@ -97,7 +97,7 @@ test("blog search returns results", async ({ page }) => {
 
   // Should navigate to a blog post
   await page.waitForURL(/\/blog\//);
-  await expect(page.locator('mark[data-markjs="true"]')).toBeVisible();
+  await expect(page.locator('mark[data-markjs="true"]').first()).toBeVisible();
 });
 
 test("search with no results shows empty state", async ({ page }) => {
@@ -107,9 +107,11 @@ test("search with no results shows empty state", async ({ page }) => {
 
   await expect(page.locator(".aa-Input")).toBeFocused();
   await page.fill(".aa-Input", "zzzznonexistentqueryzzzz");
-  await page.press(".aa-Input", "Enter");
 
-  // Should show no results message
+  // Should show no results message.
+  // Pressing Enter here would close the detached panel by design (no active
+  // item to navigate to), so we assert on the empty state that is shown as
+  // soon as the query resolves instead.
   await expect(page.locator(".aa-Panel")).toBeVisible();
   await expect(page.locator(".aa-Item")).toHaveCount(0);
 });
