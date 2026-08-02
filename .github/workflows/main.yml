@@ -64,6 +64,10 @@ jobs:
 
       - run: pnpm run build
 
+      # Coverage thresholds are enforced only when --coverage is passed.
+      # Run after the build, because parse.test.ts needs example-docs/build.
+      - run: pnpm --filter docusaurus-search-local --fail-if-no-match run test:coverage
+
       - run: pnpm run test
 
       # Install OS dependencies

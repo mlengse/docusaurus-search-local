@@ -81,6 +81,7 @@
     "dev:client:cp": "nodemon --watch src/client --ext css --exec \"copyfiles --up 1 src/client/**/*.css lib && touch lib/client/theme/SearchBar/index.js\" ",
     "dev:server": "tsc --project tsconfig.server.json --watch",
     "test": "jest src",
+    "test:coverage": "jest src --coverage",
     "test:e2e": "playwright test e2e-tests",
     "prepack": "cp ../../CHANGELOG.md ../../README.md .",
     "postpack": "rm -f CHANGELOG.md README.md"

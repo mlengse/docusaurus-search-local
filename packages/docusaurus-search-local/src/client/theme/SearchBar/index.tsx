@@ -31,13 +31,31 @@ function getItemUrl({ document }: MyItem): string {
   return url;
 }
 
+// The mlengse/lunr.js fork refuses to build an index with zero documents
+// (upstream lunr allows it), which would throw while this module is loaded
+// during SSR. Fall back to a stub index that matches nothing.
+function createEmptyIndex(): lunr.Index {
+  try {
+    return mylunr(function () {
+      this.ref("id");
+      this.field("title");
+      this.field("content");
+    });
+  } catch (err) {
+    console.warn(
+      "[Local Search] Failed to build empty index:",
+      err instanceof Error ? err.message : err,
+    );
+    return {
+      query: () => [],
+      search: () => [],
+    } as unknown as lunr.Index;
+  }
+}
+
 const EMPTY_INDEX = {
   documents: [],
-  index: mylunr(function () {
-    this.ref("id");
-    this.field("title");
-    this.field("content");
-  }),
+  index: createEmptyIndex(),
 };
 
 async function fetchIndex(

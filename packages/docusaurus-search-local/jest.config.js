@@ -17,6 +17,12 @@ module.exports = {
       displayName: "client",
       testEnvironment: "jest-environment-jsdom",
       testMatch: ["<rootDir>/src/client/**/*.test.{ts,tsx}"],
+      coverageThreshold: {
+        global: {
+          lines: 40,
+          branches: 30,
+        },
+      },
       moduleNameMapper: {
         "\\.css$": "<rootDir>/src/__mocks__/styleMock.js",
         "d-s-l-a-generated": "<rootDir>/src/__mocks__/d-s-l-a-generated.js",

@@ -123,13 +123,13 @@ the scalar form.
 
 Tokenizer strategy:
 
-| Language             | Client `tokenize`                       | Notes                                                                                                                                                                                                              |
-| -------------------- | --------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `en`                 | `lunr.tokenizer`                        | default.                                                                                                                                                                                                           |
-| `zh`                 | `lunr.zh.tokenizer`                     | Uses `@node-rs/jieba` (WASM, bundled via `mlengse/lunr-languages`) on the server and falls back to `Intl.Segmenter` in the browser. No native compilation; no `nodejieba` required. `tokenizerSeparator` rejected. |
-| `ja`                 | `lunr.ja.tokenizer` (via `tinyseg`)     | `tokenizerSeparator` rejected.                                                                                                                                                                                     |
-| `th`, `hi`           | `lunr.<code>.tokenizer` (via `wordcut`) | `tokenizerSeparator` rejected for `th`; honored for `hi`.                                                                                                                                                          |
-| multi-language array | union of `lunr.tokenizer` + each language tokenizer | Mirrors `lunr.multiLanguage`, so CJK queries (`zh`/`ja`/`th`) are segmented like the indexed documents. `tokenizerSeparator` honored (applied to the default tokenizer).                       |
+| Language             | Client `tokenize`                                   | Notes                                                                                                                                                                                                              |
+| -------------------- | --------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `en`                 | `lunr.tokenizer`                                    | default.                                                                                                                                                                                                           |
+| `zh`                 | `lunr.zh.tokenizer`                                 | Uses `@node-rs/jieba` (WASM, bundled via `mlengse/lunr-languages`) on the server and falls back to `Intl.Segmenter` in the browser. No native compilation; no `nodejieba` required. `tokenizerSeparator` rejected. |
+| `ja`                 | `lunr.ja.tokenizer` (via `tinyseg`)                 | `tokenizerSeparator` rejected.                                                                                                                                                                                     |
+| `th`, `hi`           | `lunr.<code>.tokenizer` (via `wordcut`)             | `tokenizerSeparator` rejected for `th`; honored for `hi`.                                                                                                                                                          |
+| multi-language array | union of `lunr.tokenizer` + each language tokenizer | Mirrors `lunr.multiLanguage`, so CJK queries (`zh`/`ja`/`th`) are segmented like the indexed documents. `tokenizerSeparator` honored (applied to the default tokenizer).                                           |
 
 For a scalar language, `tokenize` is
 `input => <lang>.tokenizer(input).map(token => token.str)` (for `th`, the
@@ -171,24 +171,30 @@ the default splitter keeps working. `tokenize` guards for raw-string tokenizers
   `noUnusedParameters` enabled.
 - **Formatting**: `prettier --check` clean.
 - **Dependency consistency**: `syncpack list-mismatches` clean.
-- **Unit tests** (`jest src`): 4 suites — `server/index.test.ts`,
-  `server/parse.test.ts`, `client/.../SearchBar/__tests__/index.test.tsx`,
-  `client/.../SearchBar/__tests__/HighlightSearchResults.test.tsx`.
-- **Coverage thresholds**: configured (40% lines / 30% branches,
-  `jest.config.js`) but only enforced when running `jest --coverage`; no
-  script or CI step currently passes `--coverage` (see §9).
+- **Unit tests** (`jest src`): 6 suites, 65 tests, all passing with a local
+  `example-docs/build` present:
+  - `server/index.test.ts`, `server/parse.test.ts`,
+    `server/generated-client-module.test.ts`
+  - `client/.../SearchBar/__tests__/index.test.tsx`,
+    `client/.../SearchBar/__tests__/HighlightSearchResults.test.tsx`,
+    `client/.../SearchBar/__tests__/RootReuse.test.tsx`
+- **Coverage thresholds**: enforced (40% lines / 30% branches per project,
+  `jest.config.js`) via `pnpm --filter docusaurus-search-local run
+test:coverage`; measured 47% lines / 44% branches overall (see §9).
 - **E2E** (`pnpm test:e2e`): 7 Playwright tests (basic search, version-aware
   index, language-specific index, dark-mode sync, blog search, no-results
   empty state, static-page search).
 
 ### 7.1 Test suites at a glance
 
-| Suite                                        | Cases | Covers                                                                                                                                          |
-| -------------------------------------------- | ----- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
-| `server/index.test.ts`                       | 20    | `validateOptions`, `urlMatchesPrefix`, `trimLeadingSlash`, `trimTrailingSlash`, `codeTranslationLocalesToTry`.                                  |
-| `server/parse.test.ts`                       | 21    | `html2text`, `getDocusaurusTag`. 11 cases require the example site to be built (`example-docs/build`) and only fail locally when it is missing. |
-| `client/.../index.test.tsx`                  | 4     | `fetchIndex` behavior (404, invalid JSON, valid index, network error).                                                                          |
-| `client/.../HighlightSearchResults.test.tsx` | 7     | mark/unmark on `<article>` & `<main>`, state cleanup, missing-root no-op, unmount cleanup.                                                      |
+| Suite                                        | Cases | Covers                                                                                                                                                           |
+| -------------------------------------------- | ----- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `server/index.test.ts`                       | 24    | `validateOptions`, `urlMatchesPrefix`, `trimLeadingSlash`, `trimTrailingSlash`, `codeTranslationLocalesToTry`, `sanitizeDocusaurusTag`.                          |
+| `server/parse.test.ts`                       | 21    | `html2text`, `getDocusaurusTag`. 11 cases require the example site to be built (`example-docs/build`) and only fail locally when it is missing.                  |
+| `server/generated-client-module.test.ts`     | 6     | `generateClientModule` output via a subprocess harness: CJK array/latin tokenization, scalar `zh`, `de`+`en`, `tokenizerSeparator`, `mylunr`/`tokenize` exports. |
+| `client/.../index.test.tsx`                  | 4     | `fetchIndex` behavior (404, invalid JSON, valid index, network error).                                                                                           |
+| `client/.../HighlightSearchResults.test.tsx` | 7     | mark/unmark on `<article>` & `<main>`, state cleanup, missing-root no-op, unmount cleanup.                                                                       |
+| `client/.../RootReuse.test.tsx`              | 3     | `createRoot` reuse per container, distinct containers, unmount cleanup.                                                                                          |
 
 ## 8. Compatibility
 
@@ -223,8 +229,13 @@ the default splitter keeps working. `tokenize` guards for raw-string tokenizers
    tokenizer mirroring `lunr.multiLanguage`, so `["zh","en"]`, `["ja", …]`, and
    `["th", …]` segment CJK queries like the indexed documents; the
    `lunr.tokenizer.separator` is preserved on the union. See §5.
-5. **Coverage thresholds are dead config**: `jest.config.js` sets thresholds,
-   but no script/CI passes `--coverage`, so they are never enforced.
+5. ~~**Coverage thresholds are dead config**~~ **Resolved (Phase 4.1).**
+   `jest.config.js` sets thresholds per project (40% lines / 30% branches) and
+   they are now enforced: a `test:coverage` script was added to the plugin
+   `package.json`, and `.github/workflows/main.yml` runs it after the build
+   (parse tests need `example-docs/build`). Measured overall coverage at
+   Phase 4.1: 47.27% lines / 43.98% branches (server 48.23%/47.87%,
+   client 45.38%/30.18%).
 6. ~~**`@docusaurus/utils-validation` is a devDependency**~~ **Resolved
    (Phase 2).** It is required at runtime by `src/server/index.ts` (Joi) and
    is now a regular `dependency` (`catalog:3.9.2`) instead of a
