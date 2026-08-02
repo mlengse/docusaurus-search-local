@@ -115,6 +115,7 @@ const languageSchema = Joi.string().valid(
   "fr",
   "hi",
   "hu",
+  "id",
   "it",
   "ja",
   "nl",

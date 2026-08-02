@@ -8,7 +8,10 @@ function runGeneratedModule(
   language: string | string[],
   tokenizerSeparator: RegExp | undefined,
   inputs: string[],
-): { outputs: string[][]; meta: { zhTokenizerType: string } } {
+): {
+  outputs: string[][];
+  meta: { zhTokenizerType: string; idStemmed: string };
+} {
   const generated = generateClientModule({
     style: "none",
     language,
@@ -17,7 +20,7 @@ function runGeneratedModule(
   const source =
     generated.replace(/^export const /gm, "const ") +
     "\nconst __run = (inputs) => inputs.map((input) => tokenize(input));\n" +
-    "const __meta = { zhTokenizerType: typeof (mylunr && mylunr.zh && mylunr.zh.tokenizer) };\n" +
+    "const __meta = { zhTokenizerType: typeof (mylunr && mylunr.zh && mylunr.zh.tokenizer), idStemmed: (mylunr && mylunr.id && mylunr.id.stemmer(new mylunr.Token('menyelesaikan')).toString()) };\n" +
     "module.exports = { __run, __meta };\n" +
     "process.stdout.write(JSON.stringify({ outputs: __run(JSON.parse(process.argv[1])), meta: __meta }));\n";
 
@@ -74,5 +77,17 @@ describe("generateClientModule", () => {
   it("exports mylunr with the language plugins registered", () => {
     const { meta } = runGeneratedModule(["zh", "en"], undefined, []);
     expect(meta.zhTokenizerType).toBe("function");
+  });
+
+  it("registers and applies the Indonesian stemmer for scalar 'id'", () => {
+    const { meta } = runGeneratedModule("id", undefined, []);
+    expect(meta.idStemmed).toBe("selesai");
+  });
+
+  it("tokenizes Indonesian text with the default tokenizer for scalar 'id'", () => {
+    const { outputs } = runGeneratedModule("id", undefined, [
+      "menyelesaikan masalah",
+    ]);
+    expect(outputs[0]).toEqual(["menyelesaikan", "masalah"]);
   });
 });

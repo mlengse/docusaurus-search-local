@@ -56,6 +56,11 @@ it("validates options correctly", () => {
     language: ["en", "de"],
   });
 
+  expect(validateOptions({ options: { language: "id" }, validate })).toEqual({
+    ...DEFAULT_OPTIONS,
+    language: "id",
+  });
+
   [-1, 1.4, Infinity].forEach((value) =>
     expect(() =>
       validateOptions({

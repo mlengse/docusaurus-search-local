@@ -117,9 +117,9 @@ Key helpers: `urlMatchesPrefix`, `trimLeadingSlash`, `trimTrailingSlash`,
 
 ## 5. Language support
 
-`language` accepts: `ar, da, de, en, es, fi, fr, hi, hu, it, ja, nl, no, pt, ro,
-ru, sv, th, tr, vi, zh` (single or array). An array of length 1 is collapsed to
-the scalar form.
+`language` accepts: `ar, da, de, en, es, fi, fr, hi, hu, id, it, ja, nl, no, pt,
+ro, ru, sv, th, tr, vi, zh` (single or array). An array of length 1 is collapsed
+to the scalar form.
 
 Tokenizer strategy:
 
@@ -171,7 +171,7 @@ the default splitter keeps working. `tokenize` guards for raw-string tokenizers
   `noUnusedParameters` enabled.
 - **Formatting**: `prettier --check` clean.
 - **Dependency consistency**: `syncpack list-mismatches` clean.
-- **Unit tests** (`jest src`): 6 suites, 65 tests, all passing with a local
+- **Unit tests** (`jest src`): 6 suites, 67 tests, all passing with a local
   `example-docs/build` present:
   - `server/index.test.ts`, `server/parse.test.ts`,
     `server/generated-client-module.test.ts`
@@ -187,14 +187,14 @@ test:coverage`; measured 47% lines / 44% branches overall (see §9).
 
 ### 7.1 Test suites at a glance
 
-| Suite                                        | Cases | Covers                                                                                                                                                           |
-| -------------------------------------------- | ----- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `server/index.test.ts`                       | 24    | `validateOptions`, `urlMatchesPrefix`, `trimLeadingSlash`, `trimTrailingSlash`, `codeTranslationLocalesToTry`, `sanitizeDocusaurusTag`.                          |
-| `server/parse.test.ts`                       | 21    | `html2text`, `getDocusaurusTag`. 11 cases require the example site to be built (`example-docs/build`) and only fail locally when it is missing.                  |
-| `server/generated-client-module.test.ts`     | 6     | `generateClientModule` output via a subprocess harness: CJK array/latin tokenization, scalar `zh`, `de`+`en`, `tokenizerSeparator`, `mylunr`/`tokenize` exports. |
-| `client/.../index.test.tsx`                  | 4     | `fetchIndex` behavior (404, invalid JSON, valid index, network error).                                                                                           |
-| `client/.../HighlightSearchResults.test.tsx` | 7     | mark/unmark on `<article>` & `<main>`, state cleanup, missing-root no-op, unmount cleanup.                                                                       |
-| `client/.../RootReuse.test.tsx`              | 3     | `createRoot` reuse per container, distinct containers, unmount cleanup.                                                                                          |
+| Suite                                        | Cases | Covers                                                                                                                                                                                                             |
+| -------------------------------------------- | ----- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `server/index.test.ts`                       | 24    | `validateOptions`, `urlMatchesPrefix`, `trimLeadingSlash`, `trimTrailingSlash`, `codeTranslationLocalesToTry`, `sanitizeDocusaurusTag`.                                                                            |
+| `server/parse.test.ts`                       | 21    | `html2text`, `getDocusaurusTag`. 11 cases require the example site to be built (`example-docs/build`) and only fail locally when it is missing.                                                                    |
+| `server/generated-client-module.test.ts`     | 8     | `generateClientModule` output via a subprocess harness: CJK array/latin tokenization, scalar `zh`, `de`+`en`, `tokenizerSeparator`, `mylunr`/`tokenize` exports, Indonesian stemmer registration and tokenization. |
+| `client/.../index.test.tsx`                  | 4     | `fetchIndex` behavior (404, invalid JSON, valid index, network error).                                                                                                                                             |
+| `client/.../HighlightSearchResults.test.tsx` | 7     | mark/unmark on `<article>` & `<main>`, state cleanup, missing-root no-op, unmount cleanup.                                                                                                                         |
+| `client/.../RootReuse.test.tsx`              | 3     | `createRoot` reuse per container, distinct containers, unmount cleanup.                                                                                                                                            |
 
 ## 8. Compatibility
 

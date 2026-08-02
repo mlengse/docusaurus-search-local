@@ -146,7 +146,7 @@ If you want to test search locally, first build the documentation with `npm run 
 Use the `language` option if your documentation is not written in English. You can either specify a single language or an array of multiple languages.
 The following languages are available:
 
-    ar, da, de, en, es, fi, fr, hi, hu, it, ja, nl, no, pt, ro, ru, sv, th, tr, vi, zh
+    ar, da, de, en, es, fi, fr, hi, hu, id, it, ja, nl, no, pt, ro, ru, sv, th, tr, vi, zh
 
 **Important: Chinese language support (`zh`) requires no extra installation. The tokenizer ships with the `mlengse/lunr-languages` fork using `@node-rs/jieba` (WASM), which works both server-side and in the browser.**
 
