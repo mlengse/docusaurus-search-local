@@ -34,7 +34,7 @@ function getItemUrl({ document }: MyItem): string {
 // The mlengse/lunr.js fork refuses to build an index with zero documents
 // (upstream lunr allows it), which would throw while this module is loaded
 // during SSR. Fall back to a stub index that matches nothing.
-function createEmptyIndex(): lunr.Index {
+export function createEmptyIndex(): lunr.Index {
   try {
     return mylunr(function () {
       this.ref("id");
@@ -58,7 +58,7 @@ const EMPTY_INDEX = {
   index: createEmptyIndex(),
 };
 
-async function fetchIndex(
+export async function fetchIndex(
   baseUrl: string,
   tag: string,
 ): Promise<IndexWithDocuments> {
@@ -275,20 +275,7 @@ const SearchBar = () => {
           {
             sourceId: "search-results",
             templates: {
-              // footer() {
-              //   return <h1>footer</h1>
-              // },
-              // header() {
-              //   return <h1>header</h1>
-              // },
               item({ item }) {
-                // if (versionToSearchRef.current && document.docVersion !== undefined) {
-                //   result += ` <span class="badge badge--secondary">${escape(
-                //     document.docVersion
-                //   )}</span>`;
-                // }
-                // result += " " + score;
-
                 const url = getItemUrl(item);
                 return (
                   // We cannot use <Link>, because this stuff is rendered in a completely separate React tree and has no access to the Router and DocusaurusContext.
@@ -444,7 +431,6 @@ const SearchBar = () => {
           ref={autocompleteRef}
           data-tags={tags.join(",")}
         />
-        {/*<button className="dsla-search-button"></button>*/}
       </div>
     </>
   );

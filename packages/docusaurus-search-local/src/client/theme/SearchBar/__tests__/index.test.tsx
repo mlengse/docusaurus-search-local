@@ -2,50 +2,55 @@
  * @jest-environment jsdom
  */
 import "@testing-library/jest-dom";
+import { createEmptyIndex, fetchIndex } from "../index";
+
+const { mylunr } = require("../../../../__mocks__/d-s-l-a-generated") as {
+  mylunr: jest.Mock;
+};
 
 const mockFetch = jest.fn();
-global.fetch = mockFetch;
 
 beforeEach(() => {
+  global.fetch = mockFetch;
   mockFetch.mockReset();
 });
 
-describe("fetchIndex behavior (via fetch mock)", () => {
-  it("returns error response when index is not found", async () => {
-    mockFetch.mockResolvedValue({ ok: false, status: 404 });
-    const response = await fetch("/search-index-default.json");
-    expect(response.ok).toBe(false);
-    expect(response.status).toBe(404);
+describe("createEmptyIndex", () => {
+  it("builds an index when mylunr succeeds", () => {
+    const index = createEmptyIndex();
+
+    expect(mylunr).toHaveBeenCalledWith(expect.any(Function));
+    expect(index).toBeDefined();
   });
 
-  it("returns invalid JSON when format is wrong", async () => {
-    mockFetch.mockResolvedValue({
-      ok: true,
-      json: async () => ({ invalid: true }),
+  it("falls back to a stub index when mylunr throws", () => {
+    const warnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
+    mylunr.mockImplementationOnce(() => {
+      throw new Error("Cannot build an empty index");
     });
-    const response = await fetch("/search-index-default.json");
-    const json = await response.json();
-    expect(json).not.toHaveProperty("documents");
-    expect(json).not.toHaveProperty("index");
-  });
 
-  it("returns valid index format", async () => {
-    const mockData = { documents: [], index: { version: "2.3.0" } };
-    mockFetch.mockResolvedValue({
-      ok: true,
-      json: async () => mockData,
-    });
-    const response = await fetch("/search-index-default.json");
-    const json = await response.json();
-    expect(json).toHaveProperty("documents");
-    expect(json).toHaveProperty("index");
-    expect(Array.isArray(json.documents)).toBe(true);
-  });
+    const index = createEmptyIndex();
 
-  it("handles network errors gracefully", async () => {
-    mockFetch.mockRejectedValue(new TypeError("fetch failed"));
-    await expect(fetch("/search-index-default.json")).rejects.toThrow(
-      "fetch failed",
+    const stubIndex = index as unknown as {
+      query: () => unknown[];
+      search: () => unknown[];
+    };
+    expect(warnSpy).toHaveBeenCalledWith(
+      expect.stringContaining("[Local Search] Failed to build empty index"),
+      expect.stringContaining("Cannot build an empty index"),
     );
+    expect(stubIndex.query()).toEqual([]);
+    expect(stubIndex.search()).toEqual([]);
+    warnSpy.mockRestore();
+  });
+});
+
+describe("fetchIndex (development)", () => {
+  it("returns the empty index without fetching when the search index is unavailable", async () => {
+    const result = await fetchIndex("/", "default");
+
+    expect(global.fetch).not.toHaveBeenCalled();
+    expect(result.documents).toEqual([]);
+    expect(result.index).toBeDefined();
   });
 });

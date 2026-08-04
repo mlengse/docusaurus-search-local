@@ -3,6 +3,8 @@ const mylunr = jest.fn(() => ({
   field: jest.fn(),
 }));
 
+mylunr.Index = { load: jest.fn() };
+
 function tokenize(input) {
   return input.split(/\s+/);
 }

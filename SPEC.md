@@ -97,23 +97,23 @@ Key helpers: `urlMatchesPrefix`, `trimLeadingSlash`, `trimTrailingSlash`,
 
 ## 4. Options (validated by Joi)
 
-| Option                               | Type               | Default | Notes                                           |
-| ------------------------------------ | ------------------ | ------- | ----------------------------------------------- |
-| `indexDocs`                          | boolean            | `true`  |                                                 |
-| `indexDocSidebarParentCategories`    | integer ≥ 0        | `0`     | 0 disables the `sidebarParentCategories` field. |
-| `includeParentCategoriesInPageTitle` | boolean            | `false` |                                                 |
-| `indexBlog`                          | boolean            | `true`  |                                                 |
-| `indexPages`                         | boolean            | `false` |                                                 |
-| `language`                           | string \| string[] | `"en"`  | See §5.                                         |
-| `style`                              | `"none"`           | —       | disables bundled styles.                        |
-| `maxSearchResults`                   | integer ≥ 1        | `8`     |                                                 |
-| `lunr.tokenizerSeparator`            | RegExp             | —       | Rejected for `zh`, `ja`, `th`.                  |
-| `lunr.b`                             | number 0–1         | `0.75`  | BM25 field-length normalization.                |
-| `lunr.k1`                            | number ≥ 0         | `1.2`   | BM25 term-frequency saturation.                 |
-| `lunr.titleBoost`                    | number ≥ 0         | `5`     |                                                 |
-| `lunr.contentBoost`                  | number ≥ 0         | `1`     |                                                 |
-| `lunr.tagsBoost`                     | number ≥ 0         | `3`     |                                                 |
-| `lunr.parentCategoriesBoost`         | number ≥ 0         | `2`     |                                                 |
+| Option                               | Type               | Default     | Notes                                                                     |
+| ------------------------------------ | ------------------ | ----------- | ------------------------------------------------------------------------- |
+| `indexDocs`                          | boolean            | `true`      |                                                                           |
+| `indexDocSidebarParentCategories`    | integer ≥ 0        | `0`         | 0 disables the `sidebarParentCategories` field.                           |
+| `includeParentCategoriesInPageTitle` | boolean            | `false`     |                                                                           |
+| `indexBlog`                          | boolean            | `true`      |                                                                           |
+| `indexPages`                         | boolean            | `false`     |                                                                           |
+| `language`                           | string \| string[] | `"en"`      | See §5.                                                                   |
+| `style`                              | `"none"`           | —           | disables bundled styles.                                                  |
+| `maxSearchResults`                   | integer ≥ 1        | `8`         |                                                                           |
+| `lunr.tokenizerSeparator`            | RegExp             | `/[\s\-]+/` | lunr built-in; the plugin sets no default. Rejected for `zh`, `ja`, `th`. |
+| `lunr.b`                             | number 0–1         | `0.75`      | BM25 field-length normalization.                                          |
+| `lunr.k1`                            | number ≥ 0         | `1.2`       | BM25 term-frequency saturation.                                           |
+| `lunr.titleBoost`                    | number ≥ 0         | `5`         |                                                                           |
+| `lunr.contentBoost`                  | number ≥ 0         | `1`         |                                                                           |
+| `lunr.tagsBoost`                     | number ≥ 0         | `3`         |                                                                           |
+| `lunr.parentCategoriesBoost`         | number ≥ 0         | `2`         |                                                                           |
 
 ## 5. Language support
 
@@ -123,17 +123,20 @@ to the scalar form.
 
 Tokenizer strategy:
 
-| Language             | Client `tokenize`                                   | Notes                                                                                                                                                                                                              |
-| -------------------- | --------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `en`                 | `lunr.tokenizer`                                    | default.                                                                                                                                                                                                           |
-| `zh`                 | `lunr.zh.tokenizer`                                 | Uses `@node-rs/jieba` (WASM, bundled via `mlengse/lunr-languages`) on the server and falls back to `Intl.Segmenter` in the browser. No native compilation; no `nodejieba` required. `tokenizerSeparator` rejected. |
-| `ja`                 | `lunr.ja.tokenizer` (via `tinyseg`)                 | `tokenizerSeparator` rejected.                                                                                                                                                                                     |
-| `th`, `hi`           | `lunr.<code>.tokenizer` (via `wordcut`)             | `tokenizerSeparator` rejected for `th`; honored for `hi`.                                                                                                                                                          |
-| multi-language array | union of `lunr.tokenizer` + each language tokenizer | Mirrors `lunr.multiLanguage`, so CJK queries (`zh`/`ja`/`th`) are segmented like the indexed documents. `tokenizerSeparator` honored (applied to the default tokenizer).                                           |
+| Language             | Client `tokenize`                                   | Notes                                                                                                                                                                                                                               |
+| -------------------- | --------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `en`                 | `lunr.tokenizer`                                    | default.                                                                                                                                                                                                                            |
+| `zh`                 | `lunr.zh.tokenizer`                                 | Uses `@node-rs/jieba` (WASM, bundled via `mlengse/lunr-languages`) on the server and falls back to `Intl.Segmenter` in the browser. No native compilation; no `nodejieba` required. `tokenizerSeparator` rejected.                  |
+| `ja`                 | `lunr.ja.tokenizer` (via `tinyseg`)                 | `tokenizerSeparator` rejected.                                                                                                                                                                                                      |
+| `th`                 | `lunr.th.tokenizer` (via `wordcut`)                 | Raw-string tokenizer (`.str` omitted). `tokenizerSeparator` rejected.                                                                                                                                                               |
+| `hi`                 | `lunr.tokenizer` (default)                          | `lunr.wordcut` is loaded only so `require("lunr-languages/lunr.hi")` initializes; the wordcut tokenizer is not wired into scalar `tokenize`. `tokenizerSeparator` honored. In arrays, `lunr.hi.tokenizer` IS included in the union. |
+| multi-language array | union of `lunr.tokenizer` + each language tokenizer | Mirrors `lunr.multiLanguage`, so CJK queries (`zh`/`ja`/`th`) are segmented like the indexed documents. `tokenizerSeparator` honored (applied to the default tokenizer).                                                            |
 
-For a scalar language, `tokenize` is
-`input => <lang>.tokenizer(input).map(token => token.str)` (for `th`, the
-wordcut tokenizer returns raw strings, so `.str` is omitted).
+Only `zh`, `ja`, and `th` use a language-specific tokenizer for scalar
+languages; every other scalar language (including `hi`) uses the default
+`lunr.tokenizer`, so `tokenize` is
+`input => lunr.tokenizer(input).map(token => token.str)`. For `th`, the wordcut
+tokenizer returns raw strings, so `.str` is omitted.
 
 For a multi-language array, the generated client module captures the default
 `lunr.tokenizer`, replaces `lunr.tokenizer` with a union function that appends
@@ -162,7 +165,7 @@ the default splitter keeps working. `tokenize` guards for raw-string tokenizers
   `[A-Za-z0-9._-]` are stripped, leading/trailing `.`/`-` are removed, and an
   empty result falls back to `default` (a warning is logged if the tag was
   altered). The HTML is the site's own build output, so this is defense-in-depth
-  (see §9).
+  (all prior audit items are resolved; see the implementation plan).
 
 ## 7. Quality gates
 
@@ -180,7 +183,7 @@ the default splitter keeps working. `tokenize` guards for raw-string tokenizers
     `client/.../SearchBar/__tests__/RootReuse.test.tsx`
 - **Coverage thresholds**: enforced (40% lines / 30% branches per project,
   `jest.config.js`) via `pnpm --filter docusaurus-search-local run
-test:coverage`; measured 47% lines / 44% branches overall (see §9).
+test:coverage`; measured 47% lines / 44% branches overall (see the implementation plan).
 - **E2E** (`pnpm test:e2e`): 7 Playwright tests (basic search, version-aware
   index, language-specific index, dark-mode sync, blog search, no-results
   empty state, static-page search).
@@ -208,50 +211,3 @@ test:coverage`; measured 47% lines / 44% branches overall (see §9).
   (Phase 1 of the cleanup plan).
 - Search works only on statically built output (`docusaurus build`); in
   development a dummy empty index is used.
-
-## 9. Known issues / technical debt (audit findings)
-
-1. ~~**Stale `nodejieba` references.**~~ **Resolved (Phase 1).** `package.json`
-   declared `nodejieba` as an optional peer dependency and a dev dependency,
-   and `README.md` instructed users to install it for `zh`. The fork's Chinese
-   tokenizer actually uses `@node-rs/jieba` (bundled with
-   `mlengse/lunr-languages`); all references were removed from
-   `package.json`, `README.md`, and the lockfile.
-2. ~~**Unused runtime dependencies.**~~ **Resolved (Phase 2).** `algoliasearch`
-   and `@algolia/client-search` were listed in the plugin's `dependencies`
-   (and `@algolia/client-search` in `example-docs`) but never imported;
-   removed from both `package.json` files and the lockfile.
-3. ~~**Stale `repository` field.**~~ **Resolved (Phase 1).** The plugin
-   `package.json` `repository` now reads `mlengse/docusaurus-search-local`,
-   matching the README badges and `commitlint.config.mjs` help URL.
-4. ~~**CJK in multi-language arrays** is not segmented on the query side.~~
-   **Resolved (Phase 3.1).** The generated client module now emits a union
-   tokenizer mirroring `lunr.multiLanguage`, so `["zh","en"]`, `["ja", …]`, and
-   `["th", …]` segment CJK queries like the indexed documents; the
-   `lunr.tokenizer.separator` is preserved on the union. See §5.
-5. ~~**Coverage thresholds are dead config**~~ **Resolved (Phase 4.1).**
-   `jest.config.js` sets thresholds per project (40% lines / 30% branches) and
-   they are now enforced: a `test:coverage` script was added to the plugin
-   `package.json`, and `.github/workflows/main.yml` runs it after the build
-   (parse tests need `example-docs/build`). Measured overall coverage at
-   Phase 4.1: 47.27% lines / 43.98% branches (server 48.23%/47.87%,
-   client 45.38%/30.18%).
-6. ~~**`@docusaurus/utils-validation` is a devDependency**~~ **Resolved
-   (Phase 2).** It is required at runtime by `src/server/index.ts` (Joi) and
-   is now a regular `dependency` (`catalog:3.9.2`) instead of a
-   devDependency, which is correct under strict pnpm node-linker.
-7. ~~**`createRoot(container)` is called on every Autocomplete render**~~
-   **Resolved (Phase 3.2).** `index.tsx` now caches the root per panel
-   container in a `Map` ref (`rootsRef`) and reuses it across renders, so the
-   React 18/19 "container was previously passed to createRoot" warning and the
-   root leak are gone. Roots are intentionally not unmounted in the effect
-   cleanup: React 19 throws on a synchronous cross-root unmount during a
-   component's unmount commit; autocomplete recreates its panel element per
-   instance, so the cached roots are simply abandoned and the map cleared.
-8. ~~**`docusaurusTag` is not sanitized**~~ **Resolved (Phase 3.3).** A
-   `sanitizeDocusaurusTag` helper strips unsafe filename characters, trims
-   leading/trailing `.`/`-`, falls back to `default`, and logs a warning when
-   altered. It is applied when grouping documents by tag in `postBuild`, so the
-   filename is always safe.
-9. ~~**`.prettierignore` lists a non-existent `lunr.js`**~~ **Resolved
-   (Phase 1).** entry removed (the vendored file was removed in the fork).
